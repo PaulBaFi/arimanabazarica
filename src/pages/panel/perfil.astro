@@ -1,0 +1,57 @@
+---
+import PanelLayout from "@/layouts/PanelLayout.astro";
+import Sidebar from "@/components/Sidebar.astro";
+import Navbar from "@/components/Navbar.astro";
+import { configuracionesSections } from "@/data/NavbarSections";
+import LogoutAccess from "@/components/LogoutAccess";
+import Logout from "@/icons/Logout.astro";
+import PanelMain from "@/components/PanelMain.astro";
+---
+
+<PanelLayout>
+  <Sidebar slot="sidebar" activeSection="perfil" />
+  <Navbar
+    slot="navbar"
+    title="Configuraciones"
+    sections={configuracionesSections}
+  />
+  <PanelMain slot="main">
+    <section class="panel-header">
+      <article class="header-text">
+        <h1>Perfil de usuario</h1>
+        <p>
+          Administra la personal del sistema y los datos del usuario actual.
+        </p>
+      </article>
+
+      <button id="cerrarSesion">
+        <Logout />
+        Cerrar sesión
+      </button>
+      <LogoutAccess client:load />
+    </section>
+  </PanelMain>
+</PanelLayout>
+
+<style is:inline>
+  #cerrarSesion {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #d80b0b;
+    font-size: 16px;
+    background-color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 200ms ease-in-out;
+  }
+
+  #cerrarSesion:hover {
+    background-color: #ffe0e0;
+    border-color: #df2121;
+    box-shadow: 0 2px 8px rgba(209, 209, 209, 0.7);
+  }
+</style>

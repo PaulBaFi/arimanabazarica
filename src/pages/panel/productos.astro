@@ -1,0 +1,56 @@
+---
+import PanelLayout from "@/layouts/PanelLayout.astro";
+import Sidebar from "@/components/Sidebar.astro";
+import Navbar from "@/components/Navbar.astro";
+import PanelTable from "@/components/PanelTable.astro";
+import { gestionInventariosSections } from "@/data/NavbarSections";
+import { PRODUCTOS } from "@/data/Productos";
+import PanelHeader from "@/components/PanelHeader.astro";
+import PanelMain from "@/components/PanelMain.astro";
+const columnasProductos = [
+  { label: "COD", key: "idProducto" },
+  { label: "Categoría", key: "nomCategoria" },
+  { label: "Almacén", key: "numAlmacen" },
+  { label: "Producto", key: "nomProducto" },
+  { label: "Descripción", key: "descripcion" },
+  { label: "Precio (S/.)", key: "precioUni" },
+];
+---
+
+<PanelLayout>
+  <Sidebar slot="sidebar" activeSection="productos" />
+  <Navbar
+    slot="navbar"
+    title="Gestión de inventarios"
+    sections={gestionInventariosSections}
+  />
+  <PanelMain slot="main">
+    <PanelHeader
+      title="Productos"
+      descripcion="Administra los artículos disponibles en el inventario"
+    />
+
+    <section class="panel-body" id="productosSection">
+      <article class="controles">
+        <label class="controles-label" for="buscarProducto">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input
+            type="text"
+            name="buscarProducto"
+            id=""
+            placeholder="Buscar por producto, categoría o almacén"
+          />
+        </label>
+
+        <div class="buttons-content">
+          <button class="controles-btn primary" id="anadirProducto">
+            <i class="fa-solid fa-plus"></i>
+            Añadir producto
+          </button>
+        </div>
+      </article>
+
+      <PanelTable columnas={columnasProductos} datos={PRODUCTOS} />
+    </section>
+  </PanelMain>
+</PanelLayout>

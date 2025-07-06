@@ -1,0 +1,139 @@
+---
+import PanelLayout from "@/layouts/PanelLayout.astro";
+import Sidebar from "@/components/Sidebar.astro";
+import Navbar from "@/components/Navbar.astro";
+import { recursosHumanosSections } from "@/data/NavbarSections";
+import PanelMain from "@/components/PanelMain.astro";
+import PanelHeader from "@/components/PanelHeader.astro";
+import PanelTable from "@/components/PanelTable.astro";
+
+import { EMPLEADOS } from "@/data/Empleados";
+const columnasEmpleados = [
+  { label: "COD", key: "idEmpleado" },
+  { label: "Nombres", key: "nombreCompleto" },
+  { label: "Cargo", key: "nombreCargo" },
+  { label: "Contrato", key: "nombreContrato" },
+  { label: "Salario", key: "salario" },
+  { label: "Turno", key: "turnoDescripcion" },
+];
+---
+
+<PanelLayout>
+  <Sidebar slot="sidebar" activeSection="empleados" />
+  <Navbar
+    slot="navbar"
+    title="Recursos humanos"
+    sections={recursosHumanosSections}
+  />
+  <PanelMain slot="main">
+    <PanelHeader
+      title="Empleados"
+      descripcion="Administra la información personal y laboral de los empleados dentro de la organización."
+    />
+
+    <section class="panel-body" id="empleadosSection">
+      <article class="controles">
+        <label class="controles-label" for="buscarEmpelados">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input
+            type="text"
+            name="buscarEmpelados"
+            id="buscarEmpelados"
+            placeholder="Buscar por nombres"
+          />
+        </label>
+
+        <div class="buttons-content">
+          <button class="controles-btn primary" id="anadirEmpleados">
+            <i class="fa-solid fa-plus"></i>
+            Añadir empleado
+          </button>
+        </div>
+      </article>
+
+      <PanelTable columnas={columnasEmpleados} datos={EMPLEADOS} />
+    </section>
+
+    <dialog class="base-dialog" id="modalEmpleado">
+      <form method="dialog" class="base-form" id="empleadosForm">
+        <h2>Registrar nuevo empleado</h2>
+
+        <div class="form-content">
+          <div class="form-group">
+            <label for="persona">Persona:</label>
+            <select id="persona" name="persona" required>
+              <option value="">Seleccione una persona</option>
+              <option value="1">Juan Pérez</option>
+              <option value="2">María López</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="tipoUsuario">Tipo de Usuario:</label>
+            <select id="tipoUsuario" name="tipoUsuario" required>
+              <option value="">Seleccione un tipo</option>
+              <option value="admin">Administrador</option>
+              <option value="cliente">Cliente</option>
+              <option value="operador">Operador</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="correo">Correo:</label>
+            <input type="email" id="correo" name="correo" required />
+          </div>
+
+          <div class="form-group">
+            <label for="clave">Contraseña:</label>
+            <input type="password" id="clave" name="clave" required />
+          </div>
+
+          <div class="dialog-actions">
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <button type="button" class="cerrar-btn" id="cerrarModal"
+              >Cancelar</button
+            >
+          </div>
+        </div>
+      </form>
+    </dialog>
+  </PanelMain>
+</PanelLayout>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const btnAbrir = document.getElementById("anadirEmpleados");
+    const modal = document.getElementById("modalEmpleado") as HTMLDialogElement;
+    const btnCerrar = document.getElementById("cerrarModal");
+
+    btnAbrir?.addEventListener("click", () => {
+      modal.showModal();
+    });
+
+    btnCerrar?.addEventListener("click", () => {
+      modal.close();
+    });
+
+    document
+      .getElementById("empleadosForm")!
+      .addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const persona = (
+          document.getElementById("persona") as HTMLSelectElement
+        ).value;
+        const tipoUsuario = (
+          document.getElementById("tipoUsuario") as HTMLSelectElement
+        ).value;
+        const correo = (document.getElementById("correo") as HTMLInputElement)
+          .value;
+        const clave = (document.getElementById("clave") as HTMLInputElement)
+          .value;
+
+        console.log({ persona, tipoUsuario, correo, clave });
+
+        modal.close();
+        alert("Usuario registrado con éxito.");
+      });
+  });
+</script>

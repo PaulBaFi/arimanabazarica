@@ -1,0 +1,61 @@
+---
+import PanelLayout from "@/layouts/PanelLayout.astro";
+import Sidebar from "@/components/Sidebar.astro";
+import Navbar from "@/components/Navbar.astro";
+import PanelTable from "@/components/PanelTable.astro";
+import { relacionesComercialesSections } from "@/data/NavbarSections";
+import PanelHeader from "@/components/PanelHeader.astro";
+import PanelMain from "@/components/PanelMain.astro";
+
+import { PERSONAS } from "@/data/Personas";
+const columnasPersonas = [
+  { label: "COD", key: "idPersona" },
+  { label: "Distrito", key: "distrito" },
+  { label: "Nombres", key: "nombreCompleto" },
+  { label: "DNI", key: "dni" },
+  { label: "Teléfono", key: "telefono" },
+  { label: "Género", key: "genero" },
+  { label: "Dirección", key: "direccion" },
+  { label: "Correo", key: "correo" },
+  { label: "Nacimiento", key: "fechaNac" },
+];
+---
+
+<PanelLayout>
+  <Sidebar slot="sidebar" activeSection="relaciones" />
+  <Navbar
+    slot="navbar"
+    title="Relaciones comerciales"
+    sections={relacionesComercialesSections}
+  />
+
+  <PanelMain slot="main">
+    <PanelHeader
+      title="Personas"
+      descripcion="Gestiona los datos de los individuos vinculados con el negocio."
+    />
+
+    <section class="panel-body">
+      <article class="controles">
+        <label class="controles-label" for="buscarPersona">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input
+            type="text"
+            name="buscarPersona"
+            id="buscarPersona"
+            placeholder="Buscar por nombres, DNI o teléfono"
+          />
+        </label>
+
+        <div class="buttons-content">
+          <button class="controles-btn primary" id="anadirPersona">
+            <i class="fa-solid fa-plus"></i>
+            Añadir persona
+          </button>
+        </div>
+      </article>
+
+      <PanelTable columnas={columnasPersonas} datos={PERSONAS} />
+    </section>
+  </PanelMain>
+</PanelLayout>
