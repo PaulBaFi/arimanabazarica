@@ -1,11 +1,12 @@
 import { useEffect } from "react";
 import Swal from "sweetalert2";
+import { PERFIL } from "@/data/Perfil";
 
 export default function LoginAccess() {
   useEffect(() => {
     const loginBtn = document.getElementById("iniciarSesion");
-    const mail = "admin@gmail.com";
-    const pass = "123";
+    /* const mail = "admin@gmail.com";
+    const pass = "123"; */
 
     loginBtn?.addEventListener("click", function () {
       const correo = document.getElementsByName("correo")[0].value.trim();
@@ -16,12 +17,17 @@ export default function LoginAccess() {
         return;
       }
 
-      if (correo === mail && clave === pass) {
+      const perfil = PERFIL.find(
+        (emp) => emp.correo === correo && emp.contraseña === clave
+      );
+
+      if (perfil) {
         localStorage.setItem("isLoggedIn", "true");
+        localStorage.setItem("nomUsuario", perfil.nombres);
 
         Swal.fire({
           icon: "success",
-          title: "Bienvenido",
+          title: `Bienvenido, ${perfil.nombres}`,
           timer: 1500,
           showConfirmButton: false,
         }).then(() => {

@@ -18,6 +18,7 @@ export default function LogoutAccess() {
       }).then((result) => {
         if (result.isConfirmed) {
           localStorage.removeItem("isLoggedIn");
+          localStorage.removeItem("nomUsuario");
 
           Swal.fire({
             icon: "info",

@@ -30,6 +30,53 @@ import PanelMain from "@/components/PanelMain.astro";
       </button>
       <LogoutAccess client:load />
     </section>
+
+    <div class="panel-body" id="perfilSection">
+      <div class="profile-header">
+        <div class="profile-info">
+          <strong id="usuNombres"></strong>
+          <br />
+          <span id="usuCorreo"></span>
+        </div>
+
+        <div class="profile-estadisticas">
+          <p>
+            DNI:
+            <span id="usuDni"></span>
+          </p>
+          <p>
+            Teléfono
+            <span id="usuTelefono"></span>
+          </p>
+          <p>
+            Dirección
+            <span id="usuDireccion"></span>
+          </p>
+          <p>
+            Salario
+            <span id="usuSalario"></span>
+          </p>
+          <p>
+            Turno
+            <span id="usuTurno"></span>
+          </p>
+          <p>
+            Cargo
+            <span id="usuCargo"></span>
+          </p>
+          <p>
+            Contrato
+            <span id="usuContrato"></span>
+          </p>
+          <p>
+            Tipo de usuario
+            <span id="usuTipoUsuario"></span>
+          </p>
+        </div>
+      </div>
+
+      <div class="profile-content"></div>
+    </div>
   </PanelMain>
 </PanelLayout>
 
@@ -54,4 +101,93 @@ import PanelMain from "@/components/PanelMain.astro";
     border-color: #df2121;
     box-shadow: 0 2px 8px rgba(209, 209, 209, 0.7);
   }
+
+  .profile-info {
+    width: fit-content;
+    padding: 20px;
+  }
+
+  .profile-info strong {
+    font-size: 18px;
+  }
+
+  .profile-info p {
+    color: gray;
+  }
+
+  .profile-estadisticas {
+    padding: 20px;
+  }
+  .profile-estadisticas p {
+    font-weight: 500;
+    color: gray;
+  }
+
+  .profile-estadisticas p span {
+    color: black;
+    font-weight: 400;
+  }
 </style>
+
+<script>
+  import { PERFIL } from "@/data/Perfil";
+
+  const nombreBuscado = localStorage.getItem("nomUsuario")?.toLowerCase();
+
+  const perfil = PERFIL.find(
+    (usu) => usu.nombres.toLowerCase() === nombreBuscado
+  );
+
+  const usuNombre = document.getElementById("usuNombres") as HTMLElement;
+  const usuDni = document.getElementById("usuDni") as HTMLElement;
+  const usuTelefono = document.getElementById("usuTelefono") as HTMLElement;
+  const usuDireccion = document.getElementById("usuDireccion") as HTMLElement;
+  const usuSalario = document.getElementById("usuSalario") as HTMLElement;
+  const usuTurno = document.getElementById("usuTurno") as HTMLElement;
+  const usuCargo = document.getElementById("usuCargo") as HTMLElement;
+  const usuContrato = document.getElementById("usuContrato") as HTMLElement;
+  const usuTipoUsuario = document.getElementById(
+    "usuTipoUsuario"
+  ) as HTMLElement;
+  const usuCorreo = document.getElementById("usuCorreo") as HTMLElement;
+
+  if (usuNombre) {
+    usuNombre.textContent = perfil?.nombres ?? "";
+  }
+
+  if (usuDni) {
+    usuDni.textContent = perfil?.dni ?? "";
+  }
+
+  if (usuTelefono) {
+    usuTelefono.textContent = perfil?.telefono ?? "";
+  }
+
+  if (usuDireccion) {
+    usuDireccion.textContent = perfil?.direccion ?? "";
+  }
+
+  if (usuSalario) {
+    usuSalario.textContent = perfil?.salario ? `${perfil.salario}` : "";
+  }
+
+  if (usuTurno) {
+    usuTurno.textContent = perfil?.turno ?? "";
+  }
+
+  if (usuCargo) {
+    usuCargo.textContent = perfil?.nombreCargo ?? "";
+  }
+
+  if (usuContrato) {
+    usuContrato.textContent = perfil?.nombreContrato ?? "";
+  }
+
+  if (usuTipoUsuario) {
+    usuTipoUsuario.textContent = perfil?.nombreTipo ?? "";
+  }
+
+  if (usuCorreo) {
+    usuCorreo.textContent = perfil?.correo ?? "";
+  }
+</script>
