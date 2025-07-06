@@ -7,6 +7,7 @@ import { relacionesComercialesSections } from "@/data/NavbarSections";
 import PanelHeader from "@/components/PanelHeader.astro";
 import PanelMain from "@/components/PanelMain.astro";
 
+import { DISTRITOS } from "@/lib/distritos";
 import { PERSONAS } from "@/data/Personas";
 const columnasPersonas = [
   { label: "COD", key: "idPersona" },
@@ -57,5 +58,204 @@ const columnasPersonas = [
 
       <PanelTable columnas={columnasPersonas} datos={PERSONAS} />
     </section>
+
+    <dialog class="base-dialog" id="modalPersona">
+      <form method="dialog" class="base-form" id="personasForm">
+        <h2>Registrar nueva persona</h2>
+
+        <div class="form-content form-grid">
+          <div class="form-grid1">
+            <div class="form-group">
+              <label for="distrito">Distrito:</label>
+              <select name="distrito" id="distrito">
+                <option value="">—Seleccionar un distrtio—</option>
+                {
+                  DISTRITOS.map((distrito) => {
+                    return (
+                      <option value={distrito.id}>{distrito.nombre}</option>
+                    );
+                  })
+                }
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="nombres">Nombres:</label>
+              <input
+                type="text"
+                id="nombres"
+                name="nombres"
+                maxlength="100"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="apepaterno">Apellido paterno:</label>
+              <input
+                type="text"
+                id="apepaterno"
+                name="apepaterno"
+                maxlength="100"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="apematerno">Apellido materno:</label>
+              <input
+                type="text"
+                id="apematerno"
+                name="apematerno"
+                maxlength="100"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="dni">DNI:</label>
+              <input type="number" id="dni" name="dni" maxlength="8" required />
+            </div>
+          </div>
+
+          <div class="form-grid2">
+            <div class="form-group">
+              <label for="telefono">Teléfono:</label>
+              <input
+                type="tel"
+                id="telefono"
+                name="telefono"
+                maxlength="9"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="genero">Género:</label>
+              <select name="genero" id="genero">
+                <option value="">—Seleccionar un género—</option>
+                <option value="M">Masculino</option>
+                <option value="F">Femenino</option>
+                <option value="P">Prefiero no decirlo</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="direccion">Dirección:</label>
+              <input
+                type="text"
+                id="direccion"
+                name="direccion"
+                maxlength="200"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="correo">Correo:</label>
+              <input
+                type="email"
+                id="correo"
+                name="correo"
+                maxlength="150"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="nacimiento">Nacimiento:</label>
+              <input type="date" id="nacimiento" name="nacimiento" required />
+            </div>
+          </div>
+        </div>
+
+        <div class="dialog-actions">
+          <button type="submit" class="btn btn-primary">Guardar</button>
+          <button type="button" class="cerrar-btn" id="cerrarModal"
+            >Cancelar</button
+          >
+        </div>
+      </form>
+    </dialog>
   </PanelMain>
 </PanelLayout>
+
+<script>
+  import Swal from "sweetalert2";
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const btnAbrir = document.getElementById("anadirPersona");
+    const modal = document.getElementById("modalPersona") as HTMLDialogElement;
+    const btnCerrar = document.getElementById("cerrarModal");
+
+    btnAbrir?.addEventListener("click", () => {
+      if (modal.showModal) {
+        modal.showModal();
+      } else {
+        modal.setAttribute("open", "true");
+      }
+    });
+
+    btnCerrar?.addEventListener("click", () => {
+      modal.close();
+    });
+
+    document
+      .getElementById("personasForm")!
+      .addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const nombres = (document.getElementById("nombres") as HTMLInputElement)
+          .value;
+        const apepaterno = (
+          document.getElementById("apepaterno") as HTMLInputElement
+        ).value;
+        const apematerno = (
+          document.getElementById("apematerno") as HTMLInputElement
+        ).value;
+        const dni = (document.getElementById("dni") as HTMLInputElement).value;
+        const telefono = (
+          document.getElementById("telefono") as HTMLInputElement
+        ).value;
+        const genero = (document.getElementById("genero") as HTMLSelectElement)
+          .value;
+        const direccion = (
+          document.getElementById("direccion") as HTMLInputElement
+        ).value;
+        const correo = (document.getElementById("correo") as HTMLInputElement)
+          .value;
+        const nacimiento = (
+          document.getElementById("nacimiento") as HTMLInputElement
+        ).value;
+
+        console.log({
+          nombres,
+          apepaterno,
+          apematerno,
+          dni,
+          telefono,
+          genero,
+          direccion,
+          correo,
+          nacimiento,
+          estado: 1,
+        });
+
+        modal.close();
+        Swal.fire({
+          title: "Persona registrada con éxito!",
+          icon: "success",
+        });
+
+        (document.getElementById("nombres") as HTMLInputElement).value = "";
+        (document.getElementById("apepaterno") as HTMLInputElement).value = "";
+        (document.getElementById("apematerno") as HTMLInputElement).value = "";
+        (document.getElementById("dni") as HTMLInputElement).value = "";
+        (document.getElementById("telefono") as HTMLInputElement).value = "";
+        (document.getElementById("genero") as HTMLInputElement).value = "";
+        (document.getElementById("direccion") as HTMLInputElement).value = "";
+        (document.getElementById("correo") as HTMLInputElement).value = "";
+        (document.getElementById("nacimiento") as HTMLInputElement).value = "";
+      });
+  });
+</script>

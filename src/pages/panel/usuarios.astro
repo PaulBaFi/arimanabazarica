@@ -15,7 +15,6 @@ const columnasUsuario = [
   { label: "Empleado", key: "empleado" },
   { label: "Correo", key: "correo" },
   { label: "Tipo Usuario", key: "tipoUsuario" },
-  { label: "Cantidad", key: "cantidad" },
 ];
 ---
 
@@ -61,13 +60,13 @@ const columnasUsuario = [
 
         <div class="form-content">
           <div class="form-group">
-            <label for="Empleado">Empleado:</label>
-            <select id="Empleado" name="Empleado" required>
+            <label for="empleado">Empleado:</label>
+            <select id="empleado" name="empleado" required>
               <option value="">—Seleccione un empelado—</option>
               {
                 EMPLEADOS.map((empleado) => {
                   return (
-                    <option value={empleado.nombreCompleto}>
+                    <option value={empleado.idEmpleado}>
                       {empleado.nombreCompleto}
                     </option>
                   );
@@ -111,6 +110,8 @@ const columnasUsuario = [
 </PanelLayout>
 
 <script>
+  import Swal from "sweetalert2";
+
   document.addEventListener("DOMContentLoaded", () => {
     const btnAbrir = document.getElementById("anadirUsuarios");
     const modal = document.getElementById("modalUsuario") as HTMLDialogElement;
@@ -133,10 +134,10 @@ const columnasUsuario = [
       .addEventListener("submit", function (e) {
         e.preventDefault();
 
-        const persona = (
-          document.getElementById("persona") as HTMLSelectElement
+        const idempleado = (
+          document.getElementById("empleado") as HTMLSelectElement
         ).value;
-        const tipoUsuario = (
+        const idtipoUsuario = (
           document.getElementById("tipoUsuario") as HTMLSelectElement
         ).value;
         const correo = (document.getElementById("correo") as HTMLInputElement)
@@ -144,10 +145,18 @@ const columnasUsuario = [
         const clave = (document.getElementById("clave") as HTMLInputElement)
           .value;
 
-        console.log({ persona, tipoUsuario, correo, clave });
+        console.log({ idempleado, idtipoUsuario, correo, clave, estado: 1 });
 
         modal.close();
-        alert("Usuario registrado con éxito.");
+        Swal.fire({
+          title: "Usuario registrado con éxito!",
+          icon: "success",
+        });
+
+        (document.getElementById("empleado") as HTMLInputElement).value = "";
+        (document.getElementById("tipoUsuario") as HTMLInputElement).value = "";
+        (document.getElementById("correo") as HTMLInputElement).value = "";
+        (document.getElementById("clave") as HTMLInputElement).value = "";
       });
   });
 </script>

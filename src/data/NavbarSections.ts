@@ -11,7 +11,11 @@ export const recursosHumanosSections = [
 
 export const gestionUsuariosSections = [
   { id: "usuarios", label: "Usuarios", href: "/panel/usuarios" },
-  { id: "roles", label: "Roles", href: "/panel/roles" },
+  {
+    id: "tipoUsuario",
+    label: "Tipos de usuario",
+    href: "/panel/tipos-usuarios",
+  },
 ];
 
 export const gestionInventariosSections = [

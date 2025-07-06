@@ -7,6 +7,9 @@ import PanelMain from "@/components/PanelMain.astro";
 import PanelHeader from "@/components/PanelHeader.astro";
 import PanelTable from "@/components/PanelTable.astro";
 
+import { PERSONAS } from "@/data/Personas";
+import { CARGOS } from "@/data/Cargos";
+import { CONTRATOS } from "@/data/Contratos";
 import { EMPLEADOS } from "@/data/Empleados";
 const columnasEmpleados = [
   { label: "COD", key: "idEmpleado" },
@@ -62,30 +65,68 @@ const columnasEmpleados = [
           <div class="form-group">
             <label for="persona">Persona:</label>
             <select id="persona" name="persona" required>
-              <option value="">Seleccione una persona</option>
-              <option value="1">Juan Pérez</option>
-              <option value="2">María López</option>
+              <option value="">—Seleccione una persona—</option>
+              {
+                PERSONAS.map((persona) => {
+                  return (
+                    <option value={persona.idPersona}>
+                      {persona.nombreCompleto} : {persona.dni}
+                    </option>
+                  );
+                })
+              }
             </select>
           </div>
 
           <div class="form-group">
-            <label for="tipoUsuario">Tipo de Usuario:</label>
-            <select id="tipoUsuario" name="tipoUsuario" required>
-              <option value="">Seleccione un tipo</option>
-              <option value="admin">Administrador</option>
-              <option value="cliente">Cliente</option>
-              <option value="operador">Operador</option>
+            <label for="cargo">Cargo:</label>
+            <select id="cargo" name="cargo" required>
+              <option value="">—Seleccione un cargo—</option>
+              {
+                CARGOS.map((cargo) => {
+                  return (
+                    <option value={cargo.idCargo}>{cargo.nombreCargo}</option>
+                  );
+                })
+              }
             </select>
           </div>
 
           <div class="form-group">
-            <label for="correo">Correo:</label>
-            <input type="email" id="correo" name="correo" required />
+            <label for="contrato">Contrato:</label>
+            <select id="contrato" name="contrato" required>
+              <option value="">—Seleccione un contrato—</option>
+              {
+                CONTRATOS.map((contrato) => {
+                  return (
+                    <option value={contrato.idContrato}>
+                      {contrato.nombre}
+                    </option>
+                  );
+                })
+              }
+            </select>
           </div>
 
           <div class="form-group">
-            <label for="clave">Contraseña:</label>
-            <input type="password" id="clave" name="clave" required />
+            <label for="salario">Salario:</label>
+            <input
+              type="number"
+              min="1"
+              step="0.5"
+              id="salario"
+              name="salario"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="turno">Turno:</label>
+            <select id="turno" name="turno" required>
+              <option value="">—Seleccione un turno—</option>
+              <option value="M">Mañana</option>
+              <option value="T">Tarde</option>
+            </select>
           </div>
 
           <div class="dialog-actions">
@@ -101,6 +142,8 @@ const columnasEmpleados = [
 </PanelLayout>
 
 <script>
+  import Swal from "sweetalert2";
+
   document.addEventListener("DOMContentLoaded", () => {
     const btnAbrir = document.getElementById("anadirEmpleados");
     const modal = document.getElementById("modalEmpleado") as HTMLDialogElement;
@@ -119,21 +162,39 @@ const columnasEmpleados = [
       .addEventListener("submit", function (e) {
         e.preventDefault();
 
-        const persona = (
+        const idpersona = (
           document.getElementById("persona") as HTMLSelectElement
         ).value;
-        const tipoUsuario = (
-          document.getElementById("tipoUsuario") as HTMLSelectElement
-        ).value;
-        const correo = (document.getElementById("correo") as HTMLInputElement)
+        const idcargo = (document.getElementById("cargo") as HTMLSelectElement)
           .value;
-        const clave = (document.getElementById("clave") as HTMLInputElement)
+        const idcontrato = (
+          document.getElementById("contrato") as HTMLSelectElement
+        ).value;
+        const salario = (document.getElementById("salario") as HTMLInputElement)
+          .value;
+        const turno = (document.getElementById("turno") as HTMLSelectElement)
           .value;
 
-        console.log({ persona, tipoUsuario, correo, clave });
+        console.log({
+          idpersona,
+          idcargo,
+          idcontrato,
+          salario,
+          turno,
+          estado: 1,
+        });
 
         modal.close();
-        alert("Usuario registrado con éxito.");
+        Swal.fire({
+          title: "Empleado registrado con éxito!",
+          icon: "success",
+        });
+
+        (document.getElementById("persona") as HTMLInputElement).value = "";
+        (document.getElementById("cargo") as HTMLInputElement).value = "";
+        (document.getElementById("contrato") as HTMLInputElement).value = "";
+        (document.getElementById("salario") as HTMLInputElement).value = "";
+        (document.getElementById("turno") as HTMLInputElement).value = "";
       });
   });
 </script>

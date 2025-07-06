@@ -2,66 +2,66 @@
 import PanelLayout from "@/layouts/PanelLayout.astro";
 import Sidebar from "@/components/Sidebar.astro";
 import Navbar from "@/components/Navbar.astro";
-import { recursosHumanosSections } from "@/data/NavbarSections";
+import { gestionUsuariosSections } from "@/data/NavbarSections";
 import PanelMain from "@/components/PanelMain.astro";
 import PanelHeader from "@/components/PanelHeader.astro";
 import PanelTable from "@/components/PanelTable.astro";
 
-import { CONTRATOS } from "@/data/Contratos";
-const columnasContratos = [
-  { label: "COD", key: "idContrato" },
-  { label: "Contrato", key: "nombre" },
+import { TIPO_USUARIO } from "@/data/TipoUsuario";
+const columnasRoles = [
+  { label: "COD", key: "id" },
+  { label: "Tipo de usuario", key: "nombre" },
   { label: "Cantidad", key: "cantidad" },
 ];
 ---
 
 <PanelLayout>
-  <Sidebar slot="sidebar" activeSection="empleados" />
+  <Sidebar slot="sidebar" activeSection="usuarios" />
   <Navbar
     slot="navbar"
-    title="Recursos humanos"
-    sections={recursosHumanosSections}
+    title="Gestión de usuarios"
+    sections={gestionUsuariosSections}
   />
   <PanelMain slot="main">
     <PanelHeader
-      title="Contratos"
-      descripcion="Gestiona los contratos con los trabajadores de la organización."
+      title="Tipos de usuario"
+      descripcion="Controla los permisos de los tipos de usuario del sistema."
     />
 
-    <section class="panel-body" id="contratosSection">
+    <section class="panel-body" id="rolesSection">
       <article class="controles">
-        <label class="controles-label" for="buscarContratos">
+        <label class="controles-label" for="buscarTipoUsuario">
           <i class="fa-solid fa-magnifying-glass"></i>
           <input
             type="text"
-            name="buscarContratos"
-            id="buscarContratos"
-            placeholder="Buscar por contrato"
+            name="buscarTipoUsuario"
+            id="buscarTipoUsuario"
+            placeholder="Buscar por tipo de usuario"
           />
         </label>
 
         <div class="buttons-content">
-          <button class="controles-btn primary" id="anadirContratos">
+          <button class="controles-btn primary" id="anadirTipoUsuario">
             <i class="fa-solid fa-plus"></i>
-            Añadir contrato
+            Añadir tipo de usuario
           </button>
         </div>
       </article>
 
-      <PanelTable columnas={columnasContratos} datos={CONTRATOS} />
+      <PanelTable columnas={columnasRoles} datos={TIPO_USUARIO} />
     </section>
 
-    <dialog class="base-dialog" id="modalContrato">
-      <form method="dialog" class="base-form" id="contratosForm">
-        <h2>Registrar nuevo contrato</h2>
+    <dialog class="base-dialog" id="modalTipoUsuario">
+      <form method="dialog" class="base-form" id="tipoUsuarioForm">
+        <h2>Registrar nuevo tipo de usuario</h2>
 
         <div class="form-content">
           <div class="form-group">
-            <label for="contrato">Contrato:</label>
+            <label for="tipoUsuario">Tipo de usuario:</label>
             <input
               type="text"
-              id="contrato"
-              name="contrato"
+              id="tipoUsuario"
+              name="tipoUsuario"
               maxlength="100"
               required
             />
@@ -83,8 +83,10 @@ const columnasContratos = [
   import Swal from "sweetalert2";
 
   document.addEventListener("DOMContentLoaded", () => {
-    const btnAbrir = document.getElementById("anadirContratos");
-    const modal = document.getElementById("modalContrato") as HTMLDialogElement;
+    const btnAbrir = document.getElementById("anadirTipoUsuario");
+    const modal = document.getElementById(
+      "modalTipoUsuario"
+    ) as HTMLDialogElement;
     const btnCerrar = document.getElementById("cerrarModal");
 
     btnAbrir?.addEventListener("click", () => {
@@ -100,23 +102,23 @@ const columnasContratos = [
     });
 
     document
-      .getElementById("contratosForm")!
+      .getElementById("tipoUsuarioForm")!
       .addEventListener("submit", function (e) {
         e.preventDefault();
 
-        const contrato = (
-          document.getElementById("contrato") as HTMLSelectElement
+        const tipoUsuario = (
+          document.getElementById("tipoUsuario") as HTMLInputElement
         ).value;
 
-        console.log({ contrato, estado: 1 });
+        console.log({ tipoUsuario, estado: 1 });
 
         modal.close();
         Swal.fire({
-          title: "Contrato registrado con éxito!",
+          title: "Tipo de usuario registrado con éxito",
           icon: "success",
         });
 
-        (document.getElementById("contrato") as HTMLInputElement).value = "";
+        (document.getElementById("tipoUsuario") as HTMLInputElement).value = "";
       });
   });
 </script>

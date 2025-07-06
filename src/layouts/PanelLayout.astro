@@ -6,6 +6,12 @@ import BaseHead from "@/components/BaseHead.astro";
 <html lang="es">
   <head>
     <BaseHead title="Panel | Arimana Bazar" />
+
+    <script>
+      if (localStorage.getItem("isLoggedIn") !== "true") {
+        window.location.href = "/login";
+      }
+    </script>
   </head>
   <body class="withNavbar">
     <slot name="sidebar" />
