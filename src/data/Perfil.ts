@@ -11,8 +11,8 @@ export const PERFIL = [
     nombreCargo: "Gerente",
     nombreContrato: "Tiempo Completo",
     nombreTipo: "Administrador",
-    correo: "gerente.principal@empresa.com",
-    contraseña: "gerente2025",
+    correo: "admin@gmail.com",
+    contraseña: "123",
   },
   {
     cod: 2,
