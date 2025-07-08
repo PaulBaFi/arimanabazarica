@@ -5,8 +5,6 @@ import { PERFIL } from "@/data/Perfil";
 export default function LoginAccess() {
   useEffect(() => {
     const loginBtn = document.getElementById("iniciarSesion");
-    /* const mail = "admin@gmail.com";
-    const pass = "123"; */
 
     loginBtn?.addEventListener("click", function () {
       const correo = document.getElementsByName("correo")[0].value.trim();

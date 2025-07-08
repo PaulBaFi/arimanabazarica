@@ -3,10 +3,162 @@ import PanelLayout from "@/layouts/PanelLayout.astro";
 import Sidebar from "@/components/Sidebar.astro";
 import Navbar from "@/components/Navbar.astro";
 import { gestionVentasSections } from "@/data/NavbarSections";
+import PanelMain from "@/components/PanelMain.astro";
+import PanelHeader from "@/components/PanelHeader.astro";
 ---
 
 <PanelLayout>
   <Sidebar slot="sidebar" activeSection="ventas" />
   <Navbar slot="navbar" title="Ventas" sections={gestionVentasSections} />
-  <div>Ventas</div>
+  <PanelMain slot="main">
+    <PanelHeader title="Ventas" descripcion="" />
+    <section class="panel-body" id="ventasSection">
+      <article class="controles">
+        <label class="controles-label" for="buscarVentas">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input
+            type="text"
+            name="buscarVentas"
+            id="buscarVentas"
+            placeholder="Buscar por empleado o tipo de usuario"
+          />
+        </label>
+
+        <div class="buttons-content">
+          <button class="controles-btn primary" id="anadirVentas">
+            <i class="fa-solid fa-plus"></i>
+            Nueva venta
+          </button>
+        </div>
+      </article>
+
+      <!-- <PanelTable columnas={columnasUsuario} datos={USUARIOS} /> -->
+    </section>
+
+    <dialog class="base-dialog" id="modalVenta">
+      <form method="dialog" class="base-form" id="ventaForm">
+        <h2>Registrar nueva venta</h2>
+
+        <div class="form-content">
+          <div class="form-group">
+            <label for="pedido">Venta:</label>
+            <select id="pedido" name="pedido" required>
+              <option value="">—Seleccionar pedido—</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="tipo">Tipo de pago:</label>
+            <select id="tipo" name="tipo" required>
+              <option value="">—Seleccionar tipo de pago—</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="cliente">Cliente:</label>
+            <select id="cliente" name="Cliente" required>
+              <option value="">—Seleccionar un cliente—</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="documento">Documento:</label>
+            <input type="text" id="documento" name="documento" required />
+          </div>
+
+          <div class="form-group">
+            <label for="subtotal">Subtotal:</label>
+            <input type="number" id="subtotal" name="subtotal" step="0.01" />
+          </div>
+
+          <div class="form-group">
+            <label for="igv">IGV (18%):</label>
+            <input type="number" id="igv" name="igv" step="0.01" />
+          </div>
+
+          <div class="form-group">
+            <label for="total">Total a pagar:</label>
+            <input type="number" id="total" name="total" step="0.01" />
+          </div>
+
+          <div class="dialog-actions">
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <button type="button" class="cerrar-btn" id="cerrarModal"
+              >Cancelar</button
+            >
+          </div>
+        </div>
+      </form>
+    </dialog>
+  </PanelMain>
 </PanelLayout>
+
+<script>
+  import Swal from "sweetalert2";
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const btnAbrir = document.getElementById("anadirVentas");
+    const modal = document.getElementById("modalVenta") as HTMLDialogElement;
+    const btnCerrar = document.getElementById("cerrarModal");
+
+    btnAbrir?.addEventListener("click", () => {
+      if (modal.showModal) {
+        modal.showModal();
+      } else {
+        modal.setAttribute("open", "true");
+      }
+    });
+
+    btnCerrar?.addEventListener("click", () => {
+      modal.close();
+    });
+
+    document
+      .getElementById("ventaForm")
+      ?.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const pedido = (document.getElementById("pedido") as HTMLInputElement)
+          .value;
+        const tipo = (document.getElementById("tipo") as HTMLInputElement)
+          .value;
+        const cliente = (document.getElementById("cliente") as HTMLInputElement)
+          .value;
+        const documento = (
+          document.getElementById("documento") as HTMLInputElement
+        ).value;
+        const subtotal = (
+          document.getElementById("subtotal") as HTMLInputElement
+        ).value;
+        const igv = (document.getElementById("igv") as HTMLInputElement).value;
+        const total = (document.getElementById("total") as HTMLInputElement)
+          .value;
+
+        console.log({
+          pedido,
+          tipo,
+          cliente,
+          documento,
+          subtotal,
+          igv,
+          total,
+          estado: 1,
+        });
+
+        modal.close();
+
+        Swal.fire({
+          title: "Venta registrada con éxito!",
+          icon: "success",
+        });
+
+        (document.getElementById("pedido") as HTMLInputElement).value = "";
+        (document.getElementById("tipo") as HTMLInputElement).value = "";
+        (document.getElementById("cliente") as HTMLInputElement).value = "";
+        (document.getElementById("documento") as HTMLInputElement).value = "";
+        (document.getElementById("subtotal") as HTMLInputElement).value = "";
+        (document.getElementById("igv") as HTMLInputElement).value = "";
+        (document.getElementById("total") as HTMLInputElement).value = "";
+      });
+  });
+</script>

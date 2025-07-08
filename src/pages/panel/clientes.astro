@@ -33,7 +33,7 @@ const columnasClientes = [
           <input
             type="text"
             name="buscarClientes"
-            id=""
+            id="buscarClientes"
             placeholder="Buscar por DNI o RUC"
           />
         </label>
@@ -48,5 +48,94 @@ const columnasClientes = [
 
       <PanelTable columnas={columnasClientes} datos={CLIENTES} />
     </section>
+
+    <dialog class="base-dialog" id="modalCliente">
+      <form method="dialog" class="base-form" id="clienteForm">
+        <h2>Registrar nuevo cliente</h2>
+
+        <div class="form-content">
+          <div class="form-group">
+            <label for="categoria">Categoría:</label>
+            <select name="categoria" id="categoria">
+              <option value="">—Seleccionar un distrito</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="nombre">Nombre:</label>
+            <input
+              type="text"
+              id="nombre"
+              name="nombre"
+              maxlength="100"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="descripcion">Descripción:</label>
+            <textarea name="descripcion" id="descripcion" maxlength="200"
+            ></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="precio">Precio:</label>
+            <input type="number" id="precio" name="precio" min="1" required />
+          </div>
+
+          <div class="dialog-actions">
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <button type="button" class="cerrar-btn" id="cerrarModal"
+              >Cancelar</button
+            >
+          </div>
+        </div>
+      </form>
+    </dialog>
   </PanelMain>
 </PanelLayout>
+
+<script>
+  import Swal from "sweetalert2";
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const btnAbrir = document.getElementById("anadirClientes");
+    const modal = document.getElementById("modalCliente") as HTMLDialogElement;
+    const btnCerrar = document.getElementById("cerrarModal");
+
+    btnAbrir?.addEventListener("click", () => {
+      if (modal.showModal) {
+        modal.showModal();
+      } else {
+        modal.setAttribute("open", "true");
+      }
+    });
+
+    btnCerrar?.addEventListener("click", () => {
+      modal.close();
+    });
+
+    document
+      .getElementById("clienteForm")
+      ?.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const persona = (document.getElementById("persona") as HTMLInputElement)
+          .value;
+        const empresa = (document.getElementById("empresa") as HTMLInputElement)
+          .value;
+
+        console.log({ persona, empresa, estado: 1 });
+
+        modal.close();
+
+        Swal.fire({
+          title: "Cliente registrado con éxito!",
+          icon: "success",
+        });
+
+        (document.getElementById("persona") as HTMLInputElement).value = "";
+        (document.getElementById("empresa") as HTMLInputElement).value = "";
+      });
+  });
+</script>

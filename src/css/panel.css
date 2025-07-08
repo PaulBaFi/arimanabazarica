@@ -345,12 +345,19 @@ form .btn {
 }
 
 .base-form .form-group input,
-.base-form .form-group select {
+.base-form .form-group select,
+.base-form .form-group textarea {
     border: 1px solid #E3E5E5;
     outline: none;
     background-color: white;
     padding: 8px 12px;
     border-radius: 8px;
+}
+
+.base-form .form-group textarea {
+    resize: none;
+    field-sizing: content;
+    max-height: 150px;
 }
 
 .base-dialog {
@@ -366,8 +373,19 @@ form .btn {
     transform: translate(-50%, -50%);
 }
 
-.dialog-actions {
+.base-dialog .form-content {
     padding: 20px;
+}
+
+.base-dialog .form-content~.dialog-actions {
+    padding: 20px;
+}
+
+.base-dialog .dialog-actions {
+    padding: 0;
+}
+
+.dialog-actions {
     display: flex;
     gap: 8px;
 }

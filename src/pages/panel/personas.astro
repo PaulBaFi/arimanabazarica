@@ -198,6 +198,15 @@ const columnasPersonas = [
 
     btnCerrar?.addEventListener("click", () => {
       modal.close();
+      (document.getElementById("nombres") as HTMLInputElement).value = "";
+      (document.getElementById("apepaterno") as HTMLInputElement).value = "";
+      (document.getElementById("apematerno") as HTMLInputElement).value = "";
+      (document.getElementById("dni") as HTMLInputElement).value = "";
+      (document.getElementById("telefono") as HTMLInputElement).value = "";
+      (document.getElementById("genero") as HTMLInputElement).value = "";
+      (document.getElementById("direccion") as HTMLInputElement).value = "";
+      (document.getElementById("correo") as HTMLInputElement).value = "";
+      (document.getElementById("nacimiento") as HTMLInputElement).value = "";
     });
 
     document

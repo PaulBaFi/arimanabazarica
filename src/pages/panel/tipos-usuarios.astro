@@ -8,7 +8,7 @@ import PanelHeader from "@/components/PanelHeader.astro";
 import PanelTable from "@/components/PanelTable.astro";
 
 import { TIPO_USUARIO } from "@/data/TipoUsuario";
-const columnasRoles = [
+const columnasTipoUsuario = [
   { label: "COD", key: "id" },
   { label: "Tipo de usuario", key: "nombre" },
   { label: "Cantidad", key: "cantidad" },
@@ -28,7 +28,7 @@ const columnasRoles = [
       descripcion="Controla los permisos de los tipos de usuario del sistema."
     />
 
-    <section class="panel-body" id="rolesSection">
+    <section class="panel-body" id="tipoUsuarioSection">
       <article class="controles">
         <label class="controles-label" for="buscarTipoUsuario">
           <i class="fa-solid fa-magnifying-glass"></i>
@@ -48,7 +48,7 @@ const columnasRoles = [
         </div>
       </article>
 
-      <PanelTable columnas={columnasRoles} datos={TIPO_USUARIO} />
+      <PanelTable columnas={columnasTipoUsuario} datos={TIPO_USUARIO} />
     </section>
 
     <dialog class="base-dialog" id="modalTipoUsuario">
@@ -99,6 +99,7 @@ const columnasRoles = [
 
     btnCerrar?.addEventListener("click", () => {
       modal.close();
+      (document.getElementById("tipoUsuario") as HTMLInputElement).value = "";
     });
 
     document

@@ -155,6 +155,11 @@ const columnasEmpleados = [
 
     btnCerrar?.addEventListener("click", () => {
       modal.close();
+      (document.getElementById("persona") as HTMLInputElement).value = "";
+      (document.getElementById("cargo") as HTMLInputElement).value = "";
+      (document.getElementById("contrato") as HTMLInputElement).value = "";
+      (document.getElementById("salario") as HTMLInputElement).value = "";
+      (document.getElementById("turno") as HTMLInputElement).value = "";
     });
 
     document

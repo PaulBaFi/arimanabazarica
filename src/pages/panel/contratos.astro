@@ -97,6 +97,7 @@ const columnasContratos = [
 
     btnCerrar?.addEventListener("click", () => {
       modal.close();
+      (document.getElementById("contrato") as HTMLInputElement).value = "";
     });
 
     document

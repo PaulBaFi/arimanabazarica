@@ -103,6 +103,8 @@ const columnasCargos = [
 
     btnCerrar?.addEventListener("click", () => {
       modal.close();
+      (document.getElementById("cargo") as HTMLInputElement).value = "";
+      (document.getElementById("descripcion") as HTMLInputElement).value = "";
     });
 
     document

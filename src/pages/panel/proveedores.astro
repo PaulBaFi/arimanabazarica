@@ -7,6 +7,7 @@ import PanelMain from "@/components/PanelMain.astro";
 import PanelHeader from "@/components/PanelHeader.astro";
 import PanelTable from "@/components/PanelTable.astro";
 
+import { EMPRESAS } from "@/data/Empresas";
 import { PROVEEDORES } from "@/data/Proveedores";
 const columnasProveedor = [
   { label: "COD", key: "cod" },
@@ -55,6 +56,102 @@ const columnasProveedor = [
 
       <PanelTable columnas={columnasProveedor} datos={PROVEEDORES} />
     </section>
+
+    <dialog class="base-dialog" id="modalProveedor">
+      <form method="dialog" class="base-form" id="proveedorForm">
+        <h2>Registrar nuevo proveedor</h2>
+
+        <div class="form-content form-grid">
+          <div class="form-grid1">
+            <div class="form-group">
+              <label for="empresa">Empresa:</label>
+              <select name="empresa" id="empresa">
+                <option value="">—Seleccionar un distrito</option>
+                {
+                  EMPRESAS.map((empresa) => {
+                    return (
+                      <option value={empresa.idEmpresa}>
+                        {empresa.razonSocial} : {empresa.ruc}
+                      </option>
+                    );
+                  })
+                }
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="nombre">Nombre:</label>
+              <input
+                type="text"
+                id="nombre"
+                name="nombre"
+                maxlength="200"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="contacto">Contacto:</label>
+              <input
+                type="text"
+                id="contacto"
+                name="contacto"
+                maxlength="200"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="correo">Correo electrónico:</label>
+              <input
+                type="email"
+                id="correo"
+                name="correo"
+                maxlength="150"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="form-grid2">
+            <div class="form-group">
+              <label for="telefono">Teléfono:</label>
+              <input
+                type="tel"
+                id="telefono"
+                name="telefono"
+                maxlength="9"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="pagina">Página web:</label>
+              <input
+                type="text"
+                id="pagina"
+                name="pagina"
+                maxlength="200"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="descripcion">Descripción</label>
+              <textarea name="descripcion" id="descripcion" maxlength="500"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="dialog-actions">
+          <button type="submit" class="btn btn-primary">Guardar</button>
+          <button type="button" class="cerrar-btn" id="cerrarModal"
+            >Cancelar</button
+          >
+        </div>
+      </form>
+    </dialog>
   </PanelMain>
 </PanelLayout>
 
@@ -63,3 +160,84 @@ const columnasProveedor = [
     width: 500px;
   }
 </style>
+
+<script>
+  import Swal from "sweetalert2";
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const btnAbrir = document.getElementById("anadirProveedor");
+    const modal = document.getElementById(
+      "modalProveedor"
+    ) as HTMLDialogElement;
+    const btnCerrar = document.getElementById("cerrarModal");
+
+    btnAbrir?.addEventListener("click", () => {
+      if (modal.showModal) {
+        modal.showModal();
+      } else {
+        modal.setAttribute("open", "true");
+      }
+    });
+
+    btnCerrar?.addEventListener("click", () => {
+      modal.close();
+      (document.getElementById("empresa") as HTMLInputElement).value = "";
+      (document.getElementById("nombre") as HTMLInputElement).value = "";
+      (document.getElementById("contacto") as HTMLInputElement).value = "";
+      (document.getElementById("correo") as HTMLInputElement).value = "";
+      (document.getElementById("telefono") as HTMLInputElement).value = "";
+      (document.getElementById("pagina") as HTMLInputElement).value = "";
+      (document.getElementById("descripcion") as HTMLInputElement).value = "";
+    });
+
+    document
+      .getElementById("proveedorForm")
+      ?.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const empresa = (document.getElementById("empresa") as HTMLInputElement)
+          .value;
+        const nombre = (document.getElementById("nombre") as HTMLInputElement)
+          .value;
+        const contacto = (
+          document.getElementById("contacto") as HTMLInputElement
+        ).value;
+        const correo = (document.getElementById("correo") as HTMLInputElement)
+          .value;
+        const telefono = (
+          document.getElementById("telefono") as HTMLInputElement
+        ).value;
+        const pagina = (document.getElementById("pagina") as HTMLInputElement)
+          .value;
+        const descripcion = (
+          document.getElementById("descripcion") as HTMLInputElement
+        ).value;
+
+        console.log({
+          empresa,
+          nombre,
+          contacto,
+          correo,
+          telefono,
+          pagina,
+          descripcion,
+          estado: 1,
+        });
+
+        modal.close();
+
+        Swal.fire({
+          title: "Proveedor registrado con éxito!",
+          icon: "success",
+        });
+
+        (document.getElementById("empresa") as HTMLInputElement).value = "";
+        (document.getElementById("nombre") as HTMLInputElement).value = "";
+        (document.getElementById("contacto") as HTMLInputElement).value = "";
+        (document.getElementById("correo") as HTMLInputElement).value = "";
+        (document.getElementById("telefono") as HTMLInputElement).value = "";
+        (document.getElementById("pagina") as HTMLInputElement).value = "";
+        (document.getElementById("descripcion") as HTMLInputElement).value = "";
+      });
+  });
+</script>

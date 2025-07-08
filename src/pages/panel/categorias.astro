@@ -50,5 +50,75 @@ const columnasCategorías = [
 
       <PanelTable columnas={columnasCategorías} datos={CATEGORIAS} />
     </section>
+
+    <dialog class="base-dialog" id="modalCategoria">
+      <form method="dialog" class="base-form" id="categoriaForm">
+        <h2>Registrar nueva categoría</h2>
+
+        <div class="form-content">
+          <div class="form-group">
+            <label for="nombre">Nombre:</label>
+            <input
+              type="text"
+              id="nombre"
+              name="nombre"
+              maxlength="100"
+              required
+            />
+          </div>
+
+          <div class="dialog-actions">
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <button type="button" class="cerrar-btn" id="cerrarModal"
+              >Cancelar</button
+            >
+          </div>
+        </div>
+      </form>
+    </dialog>
   </PanelMain>
 </PanelLayout>
+
+<script>
+  import Swal from "sweetalert2";
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const btnAbrir = document.getElementById("anadirCategorias");
+    const modal = document.getElementById(
+      "modalCategoria"
+    ) as HTMLDialogElement;
+    const btnCerrar = document.getElementById("cerrarModal");
+
+    btnAbrir?.addEventListener("click", () => {
+      if (modal.showModal) {
+        modal.showModal();
+      } else {
+        modal.setAttribute("open", "true");
+      }
+    });
+
+    btnCerrar?.addEventListener("click", () => {
+      modal.close();
+      (document.getElementById("nombre") as HTMLInputElement).value = "";
+    });
+
+    document
+      .getElementById("categoriaForm")!
+      .addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const nombre = (document.getElementById("nombre") as HTMLInputElement)
+          .value;
+
+        console.log({ nombre, estado: 1 });
+
+        modal.close();
+        Swal.fire({
+          title: "Categoría registrada con éxito!",
+          icon: "success",
+        });
+
+        (document.getElementById("nombre") as HTMLInputElement).value = "";
+      });
+  });
+</script>

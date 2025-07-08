@@ -36,7 +36,7 @@ const columnasAlmacenes = [
           <input
             type="text"
             name="buscarAlmacenes"
-            id=""
+            id="buscarAlmacenes"
             placeholder="Buscar por nombre"
           />
         </label>
@@ -51,5 +51,77 @@ const columnasAlmacenes = [
 
       <PanelTable columnas={columnasAlmacenes} datos={ALMACENES} />
     </section>
+
+    <dialog class="base-dialog" id="modalAlmacen">
+      <form method="dialog" class="base-form" id="almacenForm">
+        <h2>Registrar nuevo almacén</h2>
+
+        <div class="form-content">
+          <div class="form-group">
+            <label for="numalmacen">Número de almacen:</label>
+            <input
+              type="number"
+              id="numalmacen"
+              name="numalmacen"
+              min="1"
+              required
+            />
+          </div>
+
+          <div class="dialog-actions">
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <button type="button" class="cerrar-btn" id="cerrarModal"
+              >Cancelar</button
+            >
+          </div>
+        </div>
+      </form>
+    </dialog>
   </PanelMain>
 </PanelLayout>
+
+<script>
+  import Swal from "sweetalert2";
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const btnAbrir = document.getElementById("anadirAlmacenes");
+    const modal = document.getElementById("modalAlmacen") as HTMLDialogElement;
+    const btnCerrar = document.getElementById("cerrarModal");
+
+    const numalmacen = (
+      document.getElementById("numalmacen") as HTMLInputElement
+    ).value;
+
+    btnAbrir?.addEventListener("click", () => {
+      if (modal.showModal) {
+        modal.showModal();
+      } else {
+        modal.setAttribute("open", "true");
+      }
+    });
+
+    btnCerrar?.addEventListener("click", () => {
+      modal.close();
+      (document.getElementById("numalmacen") as HTMLInputElement).value = "";
+    });
+
+    document
+      .getElementById("almacenForm")!
+      .addEventListener("submit", function (e) {
+        e.preventDefault();
+        const numalmacen = (
+          document.getElementById("numalmacen") as HTMLInputElement
+        ).value;
+
+        console.log({ numalmacen, estado: 1 });
+
+        modal.close();
+        Swal.fire({
+          title: "Almacén registrado con éxito!",
+          icon: "success",
+        });
+
+        (document.getElementById("numalmacen") as HTMLInputElement).value = "";
+      });
+  });
+</script>

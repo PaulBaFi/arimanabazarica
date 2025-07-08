@@ -7,6 +7,8 @@ import { gestionInventariosSections } from "@/data/NavbarSections";
 import { PRODUCTOS } from "@/data/Productos";
 import PanelHeader from "@/components/PanelHeader.astro";
 import PanelMain from "@/components/PanelMain.astro";
+import { CATEGORIAS } from "@/data/Categorias";
+import { ALMACENES } from "@/data/Almacenes";
 const columnasProductos = [
   { label: "COD", key: "idProducto" },
   { label: "Categoría", key: "nomCategoria" },
@@ -37,7 +39,7 @@ const columnasProductos = [
           <input
             type="text"
             name="buscarProducto"
-            id=""
+            id="buscarProducto"
             placeholder="Buscar por producto, categoría o almacén"
           />
         </label>
@@ -52,5 +54,133 @@ const columnasProductos = [
 
       <PanelTable columnas={columnasProductos} datos={PRODUCTOS} />
     </section>
+
+    <dialog class="base-dialog" id="modalProducto">
+      <form method="dialog" class="base-form" id="productoForm">
+        <h2>Registrar nuevo producto</h2>
+
+        <div class="form-content">
+          <div class="form-group">
+            <label for="categoria">Categoría:</label>
+            <select name="categoria" id="categoria">
+              <option value="">—Seleccionar un distrito</option>
+              {
+                CATEGORIAS.map((categoria) => {
+                  return (
+                    <option value={categoria.cod}>{categoria.nombre}</option>
+                  );
+                })
+              }
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="almacen">Almacén:</label>
+            <select name="almacen" id="almacen">
+              <option value="">—Seleccionar un almacén</option>
+              {
+                ALMACENES.map((almacen) => {
+                  return (
+                    <option value={almacen.idAlmacen}>
+                      {almacen.numAlmacen}
+                    </option>
+                  );
+                })
+              }
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="nombre">Nombre:</label>
+            <input
+              type="text"
+              id="nombre"
+              name="nombre"
+              maxlength="100"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="descripcion">Descripción:</label>
+            <textarea name="descripcion" id="descripcion" maxlength="200"
+            ></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="precio">Precio:</label>
+            <input type="number" id="precio" name="precio" min="1" required />
+          </div>
+
+          <div class="dialog-actions">
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <button type="button" class="cerrar-btn" id="cerrarModal"
+              >Cancelar</button
+            >
+          </div>
+        </div>
+      </form>
+    </dialog>
   </PanelMain>
 </PanelLayout>
+
+<script>
+  import Swal from "sweetalert2";
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const btnAbrir = document.getElementById("anadirProducto");
+    const modal = document.getElementById("modalProducto") as HTMLDialogElement;
+    const btnCerrar = document.getElementById("cerrarModal");
+
+    btnAbrir?.addEventListener("click", () => {
+      if (modal.showModal) {
+        modal.showModal();
+      } else {
+        modal.setAttribute("open", "true");
+      }
+    });
+
+    btnCerrar?.addEventListener("click", () => {
+      modal.close();
+      (document.getElementById("categoria") as HTMLInputElement).value = "";
+      (document.getElementById("almacen") as HTMLInputElement).value = "";
+      (document.getElementById("nombre") as HTMLInputElement).value = "";
+      (document.getElementById("descripcion") as HTMLInputElement).value = "";
+      (document.getElementById("precio") as HTMLInputElement).value = "";
+    });
+
+    document
+      .getElementById("productoForm")!
+      .addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const categoria = (
+          document.getElementById("categoria") as HTMLSelectElement
+        ).value;
+        const almacen = (
+          document.getElementById("almacen") as HTMLSelectElement
+        ).value;
+        const nombre = (document.getElementById("nombre") as HTMLInputElement)
+          .value;
+        const descripcion = (
+          document.getElementById("descripcion") as HTMLInputElement
+        ).value;
+        const precio = (document.getElementById("precio") as HTMLInputElement)
+          .value;
+
+        console.log({ categoria, nombre, descripcion, precio, estado: 1 });
+
+        modal.close();
+        Swal.fire({
+          title: "Producto registrado con éxito!",
+          icon: "success",
+        });
+
+        (document.getElementById("categoria") as HTMLInputElement).value = "";
+        (document.getElementById("almacen") as HTMLInputElement).value = "";
+        (document.getElementById("nombre") as HTMLInputElement).value = "";
+        (document.getElementById("descripcion") as HTMLInputElement).value = "";
+        (document.getElementById("precio") as HTMLInputElement).value = "";
+      });
+  });
+</script>

@@ -7,6 +7,7 @@ import PanelMain from "@/components/PanelMain.astro";
 import PanelHeader from "@/components/PanelHeader.astro";
 import PanelTable from "@/components/PanelTable.astro";
 
+import { DISTRITOS } from "@/lib/distritos";
 import { EMPRESAS } from "@/data/Empresas";
 const columnasEmpresas = [
   { label: "COD", key: "idEmpresa" },
@@ -54,5 +55,148 @@ const columnasEmpresas = [
 
       <PanelTable columnas={columnasEmpresas} datos={EMPRESAS} />
     </section>
+
+    <dialog class="base-dialog" id="modalEmpresa">
+      <form method="dialog" class="base-form" id="empresaForm">
+        <h2>Registrar nueva empresa</h2>
+
+        <div class="form-content">
+          <div class="form-group">
+            <label for="distrito">Distrito:</label>
+            <select name="distrito" id="distrito">
+              <option value="">—Seleccionar distrito—</option>
+              {
+                DISTRITOS.map((distrito) => {
+                  return <option value={distrito.id}>{distrito.nombre}</option>;
+                })
+              }
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="razon">Razón social:</label>
+            <input
+              type="text"
+              id="razon"
+              name="razon"
+              maxlength="100"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="ruc">RUC:</label>
+            <input
+              type="number"
+              id="ruc"
+              name="ruc"
+              min="1"
+              maxlength="11"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="direccion">Dirección:</label>
+            <input
+              type="text"
+              id="direccion"
+              name="direccion"
+              maxlength="200"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="telefono">Teléfono:</label>
+            <input
+              type="tel"
+              id="telefono"
+              name="telefono"
+              maxlength="9"
+              required
+            />
+          </div>
+
+          <div class="dialog-actions">
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <button type="button" class="cerrar-btn" id="cerrarModal"
+              >Cancelar</button
+            >
+          </div>
+        </div>
+      </form>
+    </dialog>
   </PanelMain>
 </PanelLayout>
+
+<script>
+  import Swal from "sweetalert2";
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const btnAbrir = document.getElementById("anadirEmpresas");
+    const modal = document.getElementById("modalEmpresa") as HTMLDialogElement;
+    const btnCerrar = document.getElementById("cerrarModal");
+
+    btnAbrir?.addEventListener("click", () => {
+      if (modal.showModal) {
+        modal.showModal();
+      } else {
+        modal.setAttribute("open", "true");
+      }
+    });
+
+    btnCerrar?.addEventListener("click", () => {
+      modal.close();
+      (document.getElementById("distrito") as HTMLInputElement).value = "";
+      (document.getElementById("razon") as HTMLInputElement).value = "";
+      (document.getElementById("ruc") as HTMLInputElement).value = "";
+      (document.getElementById("direccion") as HTMLInputElement).value = "";
+      (document.getElementById("telefono") as HTMLInputElement).value = "";
+    });
+
+    document
+      .getElementById("empresaForm")
+      ?.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const distrito = (
+          document.getElementById("distrito") as HTMLInputElement
+        ).value;
+        const razon_social = (
+          document.getElementById("razon") as HTMLInputElement
+        ).value;
+        const ruc = (document.getElementById("ruc") as HTMLInputElement).value;
+        const direccion = (
+          document.getElementById("direccion") as HTMLInputElement
+        ).value;
+        const telefono = (
+          document.getElementById("telefono") as HTMLInputElement
+        ).value;
+
+        console.log({
+          distrito,
+          razon_social,
+          ruc,
+          direccion,
+          telefono,
+          estado: 1,
+        });
+
+        modal.close();
+
+        // Mostrar notificación (asegúrate que SweetAlert2 esté cargado)
+        Swal.fire({
+          title: "Empresa registrada con éxito!",
+          icon: "success",
+        });
+
+        // Limpiar formulario (usando los IDs correctos)
+        (document.getElementById("distrito") as HTMLInputElement).value = "";
+        (document.getElementById("razon") as HTMLInputElement).value = "";
+        (document.getElementById("ruc") as HTMLInputElement).value = "";
+        (document.getElementById("direccion") as HTMLInputElement).value = "";
+        (document.getElementById("telefono") as HTMLInputElement).value = "";
+      });
+  });
+</script>

@@ -127,6 +127,10 @@ const columnasUsuario = [
 
     btnCerrar?.addEventListener("click", () => {
       modal.close();
+      (document.getElementById("empleado") as HTMLInputElement).value = "";
+      (document.getElementById("tipoUsuario") as HTMLInputElement).value = "";
+      (document.getElementById("correo") as HTMLInputElement).value = "";
+      (document.getElementById("clave") as HTMLInputElement).value = "";
     });
 
     document
