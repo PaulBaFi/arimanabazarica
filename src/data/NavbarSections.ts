@@ -55,5 +55,4 @@ export const reportesSections = [
     label: "Reporte de empleados",
     href: "/panel/reporte-empleados",
   },
-  { id: "kardex", label: "Kardex", href: "/panel/kardex" },
 ];

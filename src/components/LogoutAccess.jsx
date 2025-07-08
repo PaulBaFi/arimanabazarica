@@ -26,7 +26,7 @@ export default function LogoutAccess() {
             timer: 1500,
             showConfirmButton: false,
           }).then(() => {
-            window.location.href = "/";
+            window.location.href = "/login";
           });
         }
       });

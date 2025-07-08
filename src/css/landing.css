@@ -323,6 +323,143 @@
     color: rgb(51, 58, 58);
 }
 
+.section-title {
+    font-size: 40px;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    text-align: center;
+    margin-bottom: 50px;
+    color: #223636;
+}
+
+.nosotros-section {
+    padding-block: 50px;
+    padding-inline: 10px;
+}
+
+.landing-nosotros {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.nosotros-card {
+    padding: 10px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.nosotros-card:hover .card-image {
+    scale: 1.05;
+    box-shadow: 0 2px 4px rgba(255, 255, 255, 0.3);
+}
+
+.nosotros-card .card-image {
+    background-color: white;
+    border-radius: 14px;
+    padding: 20px;
+    color: white;
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 160px;
+    aspect-ratio: 1;
+    position: absolute;
+    top: -20px;
+    left: 20px;
+    border: 4px solid white;
+    z-index: 99;
+    transition: all 300ms ease-in-out;
+}
+
+.nosotros-card:nth-child(1) .card-image {
+    background: linear-gradient(45deg,
+            rgb(228, 143, 16),
+            rgb(255, 246, 231));
+}
+
+.nosotros-card:nth-child(2) .card-image {
+    background: linear-gradient(45deg,
+            rgb(218, 30, 224),
+            rgb(254, 223, 255));
+}
+
+.nosotros-card .card-image .icon {
+    width: 64px;
+    height: 64px;
+}
+
+.nosotros-card .card-image {
+    font-weight: 500;
+    font-size: 20px;
+}
+
+.nosotros-card .card-content {
+    margin: 0;
+    padding: 20px;
+    padding-left: 180px;
+    width: 100%;
+}
+
+.contacto-section {
+    padding: 50px;
+    padding-inline: 10px;
+}
+
+.contacto-section a {
+    border-radius: 20px;
+    border: 1px solid rgba(148, 148, 148, 0.3);
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    position: relative;
+}
+
+.contacto-section a:hover img {
+    scale: 1.03;
+    filter: contrast(0.5);
+}
+
+.contacto-section a:hover::after {
+    content: 'Visitar ';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 24px;
+    font-weight: 500;
+    padding: 10px 20px;
+    border-radius: 12px;
+    background-color: white;
+    color: rgb(34, 54, 54);
+}
+
+.contacto-section a span {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    border-radius: 12px;
+    color: #223636;
+    font-weight: 500;
+    box-shadow: 0 4px 8px rgba(148, 148, 148, 0.3);
+    background-color: white;
+    padding: 8px 12px;
+}
+
+.contacto-section img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    object-position: center;
+    transition: all 200ms ease;
+}
+
 .landing-footer {
     margin: 10px;
     margin-top: 20px;
