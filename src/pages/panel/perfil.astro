@@ -32,50 +32,57 @@ import PanelMain from "@/components/PanelMain.astro";
     </section>
 
     <div class="panel-body" id="perfilSection">
-      <div class="profile-header">
-        <div class="profile-info">
-          <strong id="usuNombres"></strong>
-          <br />
-          <span id="usuCorreo"></span>
-        </div>
+      <div class="profile-content">
+        <label>
+          <span>Nombre</span>
+          <input type="text" id="usuNombres" readonly />
+        </label>
 
-        <div class="profile-estadisticas">
-          <p>
-            DNI:
-            <span id="usuDni"></span>
-          </p>
-          <p>
-            Teléfono
-            <span id="usuTelefono"></span>
-          </p>
-          <p>
-            Dirección
-            <span id="usuDireccion"></span>
-          </p>
-          <p>
-            Salario
-            <span id="usuSalario"></span>
-          </p>
-          <p>
-            Turno
-            <span id="usuTurno"></span>
-          </p>
-          <p>
-            Cargo
-            <span id="usuCargo"></span>
-          </p>
-          <p>
-            Contrato
-            <span id="usuContrato"></span>
-          </p>
-          <p>
-            Tipo de usuario
-            <span id="usuTipoUsuario"></span>
-          </p>
-        </div>
+        <label>
+          <span>DNI</span>
+          <input type="text" id="usuDni" readonly />
+        </label>
+
+        <label>
+          <span>Teléfono</span>
+          <input type="text" id="usuTelefono" readonly />
+        </label>
+
+        <label>
+          <span>Dirección</span>
+          <input type="text" id="usuDireccion" readonly />
+        </label>
+
+        <label>
+          <span>Salario</span>
+          <input type="text" id="usuSalario" readonly />
+        </label>
+
+        <label>
+          <span>Turno</span>
+          <input type="text" id="usuTurno" readonly />
+        </label>
+
+        <label>
+          <span>Cargo</span>
+          <input type="text" id="usuCargo" readonly />
+        </label>
+
+        <label>
+          <span>Contrato</span>
+          <input type="text" id="usuContrato" readonly />
+        </label>
+
+        <label>
+          <span>Tipo de usuario</span>
+          <input type="text" id="usuTipoUsuario" readonly />
+        </label>
+
+        <label>
+          <span>Correo</span>
+          <input type="text" id="usuCorreo" readonly />
+        </label>
       </div>
-
-      <div class="profile-content"></div>
     </div>
   </PanelMain>
 </PanelLayout>
@@ -102,30 +109,34 @@ import PanelMain from "@/components/PanelMain.astro";
     box-shadow: 0 2px 8px rgba(209, 209, 209, 0.7);
   }
 
-  .profile-info {
-    width: fit-content;
+  .profile-content {
     padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
   }
 
-  .profile-info strong {
-    font-size: 18px;
-  }
-
-  .profile-info p {
-    color: gray;
-  }
-
-  .profile-estadisticas {
-    padding: 20px;
-  }
-  .profile-estadisticas p {
+  .profile-content label span {
+    margin-left: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
     font-weight: 500;
-    color: gray;
+    font-size: 14px;
+    color: rgb(121, 121, 121);
   }
 
-  .profile-estadisticas p span {
-    color: black;
-    font-weight: 400;
+  .profile-content input {
+    padding: 8px 12px;
+    border: 1px solid rgba(209, 209, 209, 0.7);
+    border-radius: 8px;
+    width: 100%;
+    font-size: 16px;
+    transition: all 200ms ease-in-out;
+  }
+
+  .profile-content input:focus {
+    border-color: rgb(46, 184, 184);
+    box-shadow: 0 2px 6px rgba(218, 218, 218, 0.7);
   }
 </style>
 
@@ -133,61 +144,37 @@ import PanelMain from "@/components/PanelMain.astro";
   import { PERFIL } from "@/data/Perfil";
 
   const nombreBuscado = localStorage.getItem("nomUsuario")?.toLowerCase();
-
   const perfil = PERFIL.find(
     (usu) => usu.nombres.toLowerCase() === nombreBuscado
   );
 
-  const usuNombre = document.getElementById("usuNombres") as HTMLElement;
-  const usuDni = document.getElementById("usuDni") as HTMLElement;
-  const usuTelefono = document.getElementById("usuTelefono") as HTMLElement;
-  const usuDireccion = document.getElementById("usuDireccion") as HTMLElement;
-  const usuSalario = document.getElementById("usuSalario") as HTMLElement;
-  const usuTurno = document.getElementById("usuTurno") as HTMLElement;
-  const usuCargo = document.getElementById("usuCargo") as HTMLElement;
-  const usuContrato = document.getElementById("usuContrato") as HTMLElement;
-  const usuTipoUsuario = document.getElementById(
-    "usuTipoUsuario"
-  ) as HTMLElement;
-  const usuCorreo = document.getElementById("usuCorreo") as HTMLElement;
+  (document.getElementById("usuNombres") as HTMLInputElement).value =
+    perfil?.nombres ?? "";
 
-  if (usuNombre) {
-    usuNombre.textContent = perfil?.nombres ?? "";
-  }
+  (document.getElementById("usuDni") as HTMLInputElement).value =
+    perfil?.dni ?? "";
 
-  if (usuDni) {
-    usuDni.textContent = perfil?.dni ?? "";
-  }
+  (document.getElementById("usuTelefono") as HTMLInputElement).value =
+    perfil?.telefono ?? "";
 
-  if (usuTelefono) {
-    usuTelefono.textContent = perfil?.telefono ?? "";
-  }
+  (document.getElementById("usuDireccion") as HTMLInputElement).value =
+    perfil?.direccion ?? "";
 
-  if (usuDireccion) {
-    usuDireccion.textContent = perfil?.direccion ?? "";
-  }
+  (document.getElementById("usuSalario") as HTMLInputElement).value =
+    perfil?.salario ? `${perfil.salario}` : "";
 
-  if (usuSalario) {
-    usuSalario.textContent = perfil?.salario ? `${perfil.salario}` : "";
-  }
+  (document.getElementById("usuTurno") as HTMLInputElement).value =
+    perfil?.turno ?? "";
 
-  if (usuTurno) {
-    usuTurno.textContent = perfil?.turno ?? "";
-  }
+  (document.getElementById("usuCargo") as HTMLInputElement).value =
+    perfil?.nombreCargo ?? "";
 
-  if (usuCargo) {
-    usuCargo.textContent = perfil?.nombreCargo ?? "";
-  }
+  (document.getElementById("usuContrato") as HTMLInputElement).value =
+    perfil?.nombreContrato ?? "";
 
-  if (usuContrato) {
-    usuContrato.textContent = perfil?.nombreContrato ?? "";
-  }
+  (document.getElementById("usuTipoUsuario") as HTMLInputElement).value =
+    perfil?.nombreTipo ?? "";
 
-  if (usuTipoUsuario) {
-    usuTipoUsuario.textContent = perfil?.nombreTipo ?? "";
-  }
-
-  if (usuCorreo) {
-    usuCorreo.textContent = perfil?.correo ?? "";
-  }
+  (document.getElementById("usuCorreo") as HTMLInputElement).value =
+    perfil?.correo ?? "";
 </script>
