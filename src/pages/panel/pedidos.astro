@@ -3,6 +3,8 @@ import PanelLayout from "@/layouts/PanelLayout.astro";
 import Sidebar from "@/components/Sidebar.astro";
 import Navbar from "@/components/Navbar.astro";
 import { gestionPedidosSections } from "@/data/NavbarSections";
+import PanelMain from "@/components/PanelMain.astro";
+import PanelHeader from "@/components/PanelHeader.astro";
 ---
 
 <PanelLayout>
@@ -12,5 +14,29 @@ import { gestionPedidosSections } from "@/data/NavbarSections";
     title="Gestión de pedidos"
     sections={gestionPedidosSections}
   />
-  <div>Pedidos</div>
+  <PanelMain slot="main">
+    <PanelHeader title="Pedidos" descripcion="" />
+    <section class="panel-body" id="pedidosSection">
+      <article class="controles">
+        <label class="controles-label" for="buscarPedidos">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input
+            type="text"
+            name="buscarPedidos"
+            id="buscarPedidos"
+            placeholder="Buscar por usuario, cliente o fecha de pedido"
+          />
+        </label>
+
+        <div class="buttons-content">
+          <button class="controles-btn primary" id="anadirPedido">
+            <i class="fa-solid fa-plus"></i>
+            Nuevo pedido
+          </button>
+        </div>
+      </article>
+
+      <!-- <PanelTable columnas={columnasPedidos} datos={PEDIDOS} /> -->
+    </section>
+  </PanelMain>
 </PanelLayout>
