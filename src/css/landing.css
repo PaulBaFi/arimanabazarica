@@ -600,3 +600,52 @@
     padding: 20px;
     text-align: center;
 }
+
+.manuales-section {
+    padding-block: 50px;
+}
+
+.manuales-cards {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.manual-card {
+    display: flex;
+    flex-direction: column;
+    max-width: 500px;
+    aspect-ratio: 3 / 2;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 300ms ease-in-out;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(255, 255, 255, 0.3);
+}
+
+.manual-card img {
+    max-width: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: all 300ms ease-in-out;
+}
+
+.manual-card {
+    text-align: center;
+    color: #223636;
+}
+
+.manual-card b {
+    margin-top: 20px;
+    font-size: 24px;
+}
+
+.manual-card:hover {
+    color: #14a0a0;
+}
+
+.manual-card:hover img {
+    scale: 1.05;
+}
