@@ -63,4 +63,9 @@ export const reportesSections = [
     label: "Reporte de empleados",
     href: "/panel/reporte-empleados",
   },
+  {
+    id: "reporte-personas",
+    label: "Reporte de personas",
+    href: "/panel/reporte-personas",
+  },
 ];
