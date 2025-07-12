@@ -5,6 +5,17 @@ import Navbar from "@/components/Navbar.astro";
 import { gestionVentasSections } from "@/data/NavbarSections";
 import PanelMain from "@/components/PanelMain.astro";
 import PanelHeader from "@/components/PanelHeader.astro";
+
+import { VENTAS } from "@/data/Ventas";
+import { CLIENTES } from "@/data/Cliente";
+import VentasTable from "@/components/VentasTable";
+const columnasVentas = [
+  { label: "COD", key: "cod" },
+  { label: "Fecha pedido", key: "fecha_pedido" },
+  { label: "Tipo pago", key: "tipo_pago" },
+  { label: "Cliente", key: "cliente" },
+  { label: "Pago total", key: "pagototal" },
+];
 ---
 
 <PanelLayout>
@@ -32,133 +43,279 @@ import PanelHeader from "@/components/PanelHeader.astro";
         </div>
       </article>
 
-      <!-- <PanelTable columnas={columnasVentas} datos={VENTAS} /> -->
+      <VentasTable
+        columnas={columnasVentas}
+        datos={VENTAS}
+        viewInfo={true}
+        client:only="react"
+      />
     </section>
 
     <dialog class="base-dialog" id="modalVenta">
       <form method="dialog" class="base-form" id="ventaForm">
         <h2>Registrar nueva venta</h2>
 
-        <div class="form-content">
-          <div class="form-group">
-            <label for="pedido">Venta:</label>
-            <select id="pedido" name="pedido" required>
-              <option value="">—Seleccionar pedido—</option>
-            </select>
+        <div class="form-content" style="display: flex; gap: 1rem;">
+          <!-- Lado izquierdo: inputs -->
+          <div class="form-left" style="flex: 1;">
+            <div class="form-group">
+              <label for="cliente">Cliente:</label>
+              <select id="cliente" name="Cliente" required>
+                <option value="">—Seleccionar un cliente—</option>
+                {
+                  CLIENTES.map((cliente) => {
+                    return (
+                      <option value={cliente.cod}>
+                        {cliente.cliente} : {cliente.identificador}
+                      </option>
+                    );
+                  })
+                }
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="documento">Documento:</label>
+              <select id="documento" name="documento" required>
+                <option value="">—Seleccionar un documento—</option>
+                <option value="B">Boleta</option>
+                <option value="F">Factura</option>
+              </select>
+            </div>
           </div>
 
-          <div class="form-group">
-            <label for="tipo">Tipo de pago:</label>
-            <select id="tipo" name="tipo" required>
-              <option value="">—Seleccionar tipo de pago—</option>
-            </select>
+          <!-- Lado derecho: lista de productos -->
+          <div class="form-right" style="flex: 1;">
+            <ul id="listaProductos" style="list-style: none; padding: 0;"></ul>
           </div>
+        </div>
 
-          <div class="form-group">
-            <label for="cliente">Cliente:</label>
-            <select id="cliente" name="Cliente" required>
-              <option value="">—Seleccionar un cliente—</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label for="documento">Documento:</label>
-            <input type="text" id="documento" name="documento" required />
-          </div>
-
-          <div class="form-group">
-            <label for="subtotal">Subtotal:</label>
-            <input type="number" id="subtotal" name="subtotal" step="0.01" />
-          </div>
-
-          <div class="form-group">
-            <label for="igv">IGV (18%):</label>
-            <input type="number" id="igv" name="igv" step="0.01" />
-          </div>
-
-          <div class="form-group">
-            <label for="total">Total a pagar:</label>
-            <input type="number" id="total" name="total" step="0.01" />
-          </div>
-
-          <div class="dialog-actions">
-            <button type="submit" class="btn btn-primary">Guardar</button>
-            <button type="button" class="cerrar-btn" id="cerrarModal"
-              >Cancelar</button
-            >
-          </div>
+        <!-- Botones -->
+        <div class="dialog-actions">
+          <button
+            type="submit"
+            id="mostrarDetalleVenta"
+            class="btn btn-primary"
+          >
+            Generar venta
+          </button>
+          <button type="button" class="cerrar-btn" id="cerrarModal"
+            >Cancelar</button
+          >
+          <button type="button" id="anadiarProducto" class="btn btn-extra"
+            >Agregar producto</button
+          >
         </div>
       </form>
     </dialog>
   </PanelMain>
 </PanelLayout>
 
+<style is:inline>
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(30, 30, 30, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+  }
+
+  .modal-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+  }
+
+  .btn-close {
+    margin-top: 1rem;
+    background-color: #c0392b;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 6px;
+  }
+
+  .base-dialog {
+    width: fit-content;
+  }
+
+  #listaProductos {
+    max-height: 300px;
+    overflow: auto;
+  }
+
+  #listaProductos select,
+  #listaProductos input {
+    border: 1px solid #e3e5e5;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background-color: white;
+  }
+
+  #detalleVentas {
+    width: 0;
+    display: none;
+  }
+
+  #detalleVentas.active {
+    width: auto;
+    display: flex;
+  }
+
+  .btn-danger {
+    color: #d02323 !important;
+    background-color: rgb(255, 239, 239) !important;
+  }
+
+  .btn-extra {
+    background-color: white !important;
+    border: 1px solid #223636 !important;
+    color: #223636 !important;
+  }
+
+  .btn-extra:hover {
+    background-color: #223636 !important;
+    color: white !important;
+  }
+</style>
+
 <script>
   import Swal from "sweetalert2";
+  import { PRODUCTOS } from "@/data/Productos";
+
+  interface ProductoVenta {
+    id: number;
+    cantidad: number;
+  }
+
+  let productosVenta: ProductoVenta[] = [];
+
+  function renderizarProductos(): void {
+    const lista = document.getElementById("listaProductos") as HTMLUListElement;
+    if (!lista) return;
+
+    lista.innerHTML = "";
+
+    productosVenta.forEach((prod, index) => {
+      const li = document.createElement("li");
+      li.style.display = "flex";
+      li.style.alignItems = "center";
+      li.style.gap = "0.5rem";
+      li.style.marginBottom = "0.5rem";
+
+      // Crear <select> de productos
+      const select = document.createElement("select");
+      select.style.flex = "1";
+      PRODUCTOS.forEach((p) => {
+        const option = document.createElement("option");
+        option.value = p.idProducto.toString();
+        option.textContent = p.nomProducto;
+        if (p.idProducto === prod.id) option.selected = true;
+        select.appendChild(option);
+      });
+
+      select.addEventListener("change", () => {
+        const nuevoId = parseInt(select.value);
+        productosVenta[index].id = nuevoId;
+      });
+
+      // Crear <input> para cantidad
+      const inputCantidad = document.createElement("input");
+      inputCantidad.type = "number";
+      inputCantidad.min = "1";
+      inputCantidad.value = prod.cantidad.toString();
+      inputCantidad.style.width = "60px";
+
+      inputCantidad.addEventListener("input", () => {
+        const nuevaCantidad = parseInt(inputCantidad.value);
+        productosVenta[index].cantidad =
+          isNaN(nuevaCantidad) || nuevaCantidad < 1 ? 1 : nuevaCantidad;
+      });
+
+      // Botón eliminar
+      const btnEliminar = document.createElement("button");
+      btnEliminar.innerHTML = "<i class='fa-solid fa-xmark'></i>";
+      btnEliminar.className = "btn btn-sm btn-danger";
+      btnEliminar.addEventListener("click", () => {
+        productosVenta.splice(index, 1);
+        renderizarProductos();
+      });
+
+      li.appendChild(select);
+      li.appendChild(inputCantidad);
+      li.appendChild(btnEliminar);
+
+      lista.appendChild(li);
+    });
+  }
 
   document.addEventListener("DOMContentLoaded", () => {
-    const btnAbrir = document.getElementById("anadirVentas");
     const modal = document.getElementById("modalVenta") as HTMLDialogElement;
-    const btnCerrar = document.getElementById("cerrarModal");
+    const btnCerrar = document.getElementById(
+      "cerrarModal"
+    ) as HTMLButtonElement;
+    const btnAbrir = document.getElementById(
+      "anadirVentas"
+    ) as HTMLButtonElement;
+    const btnAnadirProducto = document.getElementById(
+      "anadiarProducto"
+    ) as HTMLButtonElement;
+
+    const form = document.getElementById("ventaForm") as HTMLFormElement;
 
     btnAbrir?.addEventListener("click", () => {
-      if (modal.showModal) {
-        modal.showModal();
-      } else {
-        modal.setAttribute("open", "true");
-      }
+      modal.showModal?.();
     });
 
     btnCerrar?.addEventListener("click", () => {
       modal.close();
     });
 
-    document
-      .getElementById("ventaForm")
-      ?.addEventListener("submit", function (e) {
-        e.preventDefault();
+    btnAnadirProducto?.addEventListener("click", () => {
+      productosVenta.push({ id: PRODUCTOS[0].idProducto, cantidad: 1 });
+      renderizarProductos();
+    });
 
-        const pedido = (document.getElementById("pedido") as HTMLInputElement)
-          .value;
-        const tipo = (document.getElementById("tipo") as HTMLInputElement)
-          .value;
-        const cliente = (document.getElementById("cliente") as HTMLInputElement)
-          .value;
-        const documento = (
-          document.getElementById("documento") as HTMLInputElement
-        ).value;
-        const subtotal = (
-          document.getElementById("subtotal") as HTMLInputElement
-        ).value;
-        const igv = (document.getElementById("igv") as HTMLInputElement).value;
-        const total = (document.getElementById("total") as HTMLInputElement)
-          .value;
+    form?.addEventListener("submit", (e) => {
+      e.preventDefault();
 
-        console.log({
-          pedido,
-          tipo,
-          cliente,
-          documento,
-          subtotal,
-          igv,
-          total,
-          estado: 1,
-        });
+      const cliente = (document.getElementById("cliente") as HTMLInputElement)
+        ?.value;
+      const documento = (
+        document.getElementById("documento") as HTMLInputElement
+      )?.value;
 
-        modal.close();
-
-        Swal.fire({
-          title: "Venta registrada con éxito!",
-          icon: "success",
-        });
-
-        (document.getElementById("pedido") as HTMLInputElement).value = "";
-        (document.getElementById("tipo") as HTMLInputElement).value = "";
-        (document.getElementById("cliente") as HTMLInputElement).value = "";
-        (document.getElementById("documento") as HTMLInputElement).value = "";
-        (document.getElementById("subtotal") as HTMLInputElement).value = "";
-        (document.getElementById("igv") as HTMLInputElement).value = "";
-        (document.getElementById("total") as HTMLInputElement).value = "";
+      const detalleFinal = productosVenta.map((pv) => {
+        const prod = PRODUCTOS.find((p) => p.idProducto === pv.id);
+        return {
+          id: pv.id,
+          nombre: prod?.nomProducto || "Producto desconocido",
+          cantidad: pv.cantidad,
+        };
       });
+
+      console.log({
+        cliente,
+        documento,
+        productos: detalleFinal,
+      });
+
+      modal.close();
+      Swal.fire({
+        title: "Venta registrada con éxito!",
+        icon: "success",
+      });
+
+      form.reset();
+      productosVenta = [];
+      renderizarProductos();
+    });
   });
 </script>

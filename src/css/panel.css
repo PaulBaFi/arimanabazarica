@@ -200,6 +200,11 @@ dialog {
     color: #b93029;
 }
 
+.table .btn.btn-info {
+    background-color: #e6ffe9;
+    color: #29b93c;
+}
+
 .grid-main {
     height: 100%;
     display: grid;

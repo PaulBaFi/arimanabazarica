@@ -5,7 +5,7 @@ import Navbar from "@/components/Navbar.astro";
 import { gestionPedidosSections } from "@/data/NavbarSections";
 import PanelMain from "@/components/PanelMain.astro";
 import PanelHeader from "@/components/PanelHeader.astro";
-import PanelTable from "@/components/PanelTable.astro";
+import PanelTable from "@/components/PanelTable";
 
 import { EMPRESAS } from "@/data/Empresas";
 import { PROVEEDORES } from "@/data/Proveedores";
@@ -22,10 +22,10 @@ const columnasProveedor = [
 ---
 
 <PanelLayout>
-  <Sidebar slot="sidebar" activeSection="pedidos" />
+  <Sidebar slot="sidebar" activeSection="proveedores" />
   <Navbar
     slot="navbar"
-    title="Gestión de pedidos"
+    title="Gestión de proveedores"
     sections={gestionPedidosSections}
   />
   <PanelMain slot="main">
@@ -54,7 +54,11 @@ const columnasProveedor = [
         </div>
       </article>
 
-      <PanelTable columnas={columnasProveedor} datos={PROVEEDORES} />
+      <PanelTable
+        columnas={columnasProveedor}
+        datos={PROVEEDORES}
+        client:only="react"
+      />
     </section>
 
     <dialog class="base-dialog" id="modalProveedor">

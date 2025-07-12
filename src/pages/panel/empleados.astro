@@ -5,7 +5,7 @@ import Navbar from "@/components/Navbar.astro";
 import { recursosHumanosSections } from "@/data/NavbarSections";
 import PanelMain from "@/components/PanelMain.astro";
 import PanelHeader from "@/components/PanelHeader.astro";
-import PanelTable from "@/components/PanelTable.astro";
+import PanelTable from "@/components/PanelTable";
 
 import { PERSONAS } from "@/data/Personas";
 import { CARGOS } from "@/data/Cargos";
@@ -54,7 +54,11 @@ const columnasEmpleados = [
         </div>
       </article>
 
-      <PanelTable columnas={columnasEmpleados} datos={EMPLEADOS} />
+      <PanelTable
+        columnas={columnasEmpleados}
+        datos={EMPLEADOS}
+        client:only="react"
+      />
     </section>
 
     <dialog class="base-dialog" id="modalEmpleado">

@@ -2,7 +2,7 @@
 import PanelLayout from "@/layouts/PanelLayout.astro";
 import Sidebar from "@/components/Sidebar.astro";
 import Navbar from "@/components/Navbar.astro";
-import PanelTable from "@/components/PanelTable.astro";
+import PanelTable from "@/components/PanelTable";
 import { relacionesComercialesSections } from "@/data/NavbarSections";
 import PanelHeader from "@/components/PanelHeader.astro";
 import PanelMain from "@/components/PanelMain.astro";
@@ -56,7 +56,11 @@ const columnasPersonas = [
         </div>
       </article>
 
-      <PanelTable columnas={columnasPersonas} datos={PERSONAS} />
+      <PanelTable
+        columnas={columnasPersonas}
+        datos={PERSONAS}
+        client:only="react"
+      />
     </section>
 
     <dialog class="base-dialog" id="modalPersona">

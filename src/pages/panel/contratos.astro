@@ -5,7 +5,7 @@ import Navbar from "@/components/Navbar.astro";
 import { recursosHumanosSections } from "@/data/NavbarSections";
 import PanelMain from "@/components/PanelMain.astro";
 import PanelHeader from "@/components/PanelHeader.astro";
-import PanelTable from "@/components/PanelTable.astro";
+import PanelTable from "@/components/PanelTable";
 
 import { CONTRATOS } from "@/data/Contratos";
 const columnasContratos = [
@@ -48,7 +48,11 @@ const columnasContratos = [
         </div>
       </article>
 
-      <PanelTable columnas={columnasContratos} datos={CONTRATOS} />
+      <PanelTable
+        columnas={columnasContratos}
+        datos={CONTRATOS}
+        client:only="react"
+      />
     </section>
 
     <dialog class="base-dialog" id="modalContrato">

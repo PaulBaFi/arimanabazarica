@@ -5,7 +5,7 @@ import Navbar from "@/components/Navbar.astro";
 import { gestionInventariosSections } from "@/data/NavbarSections";
 import PanelMain from "@/components/PanelMain.astro";
 import PanelHeader from "@/components/PanelHeader.astro";
-import PanelTable from "@/components/PanelTable.astro";
+import PanelTable from "@/components/PanelTable";
 
 import { ALMACENES } from "@/data/Almacenes";
 const columnasAlmacenes = [
@@ -49,7 +49,11 @@ const columnasAlmacenes = [
         </div>
       </article>
 
-      <PanelTable columnas={columnasAlmacenes} datos={ALMACENES} />
+      <PanelTable
+        columnas={columnasAlmacenes}
+        datos={ALMACENES}
+        client:only="react"
+      />
     </section>
 
     <dialog class="base-dialog" id="modalAlmacen">

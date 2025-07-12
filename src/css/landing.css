@@ -216,6 +216,10 @@
     border-color: rgb(34, 54, 54);
 }
 
+.header-social a:last-child:hover {
+    width: auto;
+}
+
 .header-social a span {
     display: none;
 }

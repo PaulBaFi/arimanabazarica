@@ -5,7 +5,7 @@ import Navbar from "@/components/Navbar.astro";
 import { gestionUsuariosSections } from "@/data/NavbarSections";
 import PanelMain from "@/components/PanelMain.astro";
 import PanelHeader from "@/components/PanelHeader.astro";
-import PanelTable from "@/components/PanelTable.astro";
+import PanelTable from "@/components/PanelTable";
 
 import { TIPO_USUARIO } from "@/data/TipoUsuario";
 const columnasTipoUsuario = [
@@ -48,7 +48,11 @@ const columnasTipoUsuario = [
         </div>
       </article>
 
-      <PanelTable columnas={columnasTipoUsuario} datos={TIPO_USUARIO} />
+      <PanelTable
+        columnas={columnasTipoUsuario}
+        datos={TIPO_USUARIO}
+        client:only="react"
+      />
     </section>
 
     <dialog class="base-dialog" id="modalTipoUsuario">

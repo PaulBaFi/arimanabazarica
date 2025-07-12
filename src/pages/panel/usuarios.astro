@@ -5,7 +5,7 @@ import Navbar from "@/components/Navbar.astro";
 import { gestionUsuariosSections } from "@/data/NavbarSections";
 import PanelHeader from "@/components/PanelHeader.astro";
 import PanelMain from "@/components/PanelMain.astro";
-import PanelTable from "@/components/PanelTable.astro";
+import PanelTable from "@/components/PanelTable";
 
 import { USUARIOS } from "@/data/Usuarios";
 import { EMPLEADOS } from "@/data/Empleados";
@@ -51,7 +51,11 @@ const columnasUsuario = [
         </div>
       </article>
 
-      <PanelTable columnas={columnasUsuario} datos={USUARIOS} />
+      <PanelTable
+        columnas={columnasUsuario}
+        datos={USUARIOS}
+        client:only="react"
+      />
     </section>
 
     <dialog class="base-dialog" id="modalUsuario">

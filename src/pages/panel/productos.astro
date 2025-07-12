@@ -2,7 +2,7 @@
 import PanelLayout from "@/layouts/PanelLayout.astro";
 import Sidebar from "@/components/Sidebar.astro";
 import Navbar from "@/components/Navbar.astro";
-import PanelTable from "@/components/PanelTable.astro";
+import PanelTable from "@/components/PanelTable";
 import { gestionInventariosSections } from "@/data/NavbarSections";
 import { PRODUCTOS } from "@/data/Productos";
 import PanelHeader from "@/components/PanelHeader.astro";
@@ -52,7 +52,11 @@ const columnasProductos = [
         </div>
       </article>
 
-      <PanelTable columnas={columnasProductos} datos={PRODUCTOS} />
+      <PanelTable
+        columnas={columnasProductos}
+        datos={PRODUCTOS}
+        client:only="react"
+      />
     </section>
 
     <dialog class="base-dialog" id="modalProducto">

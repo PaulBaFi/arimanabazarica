@@ -26,7 +26,6 @@ export const gestionInventariosSections = [
 
 export const gestionPedidosSections = [
   { id: "proveedores", label: "Proveedores", href: "/panel/proveedores" },
-  { id: "pedidos", label: "Pedidos", href: "/panel/pedidos" },
 ];
 
 export const gestionVentasSections = [
