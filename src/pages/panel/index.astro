@@ -8,7 +8,7 @@ import Sidebar from "@/components/Sidebar.astro";
   <main class="main">
     <section class="header-main"></section>
 
-    <div class="principal-grid">
+    <div class="principal-container">
       <div class="grid-block">
         <h3>Acciones rápidas</h3>
         <div class="acciones-rapidas">
@@ -28,7 +28,7 @@ import Sidebar from "@/components/Sidebar.astro";
             Nuevo colaborador
             <i class="fa-solid fa-handshake"></i>
           </a>
-          <a href="/panel/reportes-ventas" class="action-btn">
+          <a href="/panel/reporte-ventas" class="action-btn">
             Ver reportes
             <i class="fa-solid fa-file"></i>
           </a>
@@ -68,11 +68,8 @@ import Sidebar from "@/components/Sidebar.astro";
       color: #223636;
     }
 
-    .principal-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      grid-template-rows: auto;
-      gap: 20px;
+    .principal-container {
+      padding: 10px;
     }
 
     .grid-block h3 {
@@ -81,9 +78,10 @@ import Sidebar from "@/components/Sidebar.astro";
     }
 
     .grid-block .acciones-rapidas {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      grid-template-rows: auto;
+      gap: 20px;
     }
 
     .grid-block .acciones-rapidas a.action-btn {

@@ -35,11 +35,15 @@ export const gestionVentasSections = [
 ];
 
 export const configuracionesSections = [
-  { id: "nosotros", label: "Nosotros", href: "/panel/nosotros" },
   { id: "perfil", label: "Perfil de usuario", href: "/panel/perfil" },
 ];
 
 export const reportesSections = [
+  {
+    id: "reporte-kardex",
+    label: "Reporte kardex",
+    href: "/panel/kardex",
+  },
   {
     id: "reporte-ventas",
     label: "Reporte de ventas",
@@ -49,6 +53,11 @@ export const reportesSections = [
     id: "reporte-pedidos",
     label: "Reporte de pedidos",
     href: "/panel/reporte-pedidos",
+  },
+  {
+    id: "reporte-inventarios",
+    label: "Reporte de inventarios",
+    href: "/panel/reporte-inventarios",
   },
   {
     id: "reporte-empleados",

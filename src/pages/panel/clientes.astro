@@ -7,6 +7,8 @@ import PanelMain from "@/components/PanelMain.astro";
 import PanelHeader from "@/components/PanelHeader.astro";
 import PanelTable from "@/components/PanelTable.astro";
 import { CLIENTES } from "@/data/Cliente";
+import { PERSONAS } from "@/data/Personas";
+import { EMPRESAS } from "@/data/Empresas";
 const columnasClientes = [
   { label: "COD", key: "cod" },
   { label: "Identificador", key: "identificador" },
@@ -51,41 +53,88 @@ const columnasClientes = [
 
     <dialog class="base-dialog" id="modalCliente">
       <form method="dialog" class="base-form" id="clienteForm">
-        <h2>Registrar nuevo cliente</h2>
+        <h2>Registrar nuevo cliente como</h2>
+        <div class="form-content">
+          <div class="form-flex">
+            <div class="form-group">
+              <button id="anadirClientePersona">
+                <i class="fa-solid fa-user"></i>
+                Persona
+              </button>
+            </div>
+
+            <div class="form-group">
+              <button id="anadirClienteEmpresa">
+                <i class="fa-solid fa-building"></i>
+                Empresa
+              </button>
+            </div>
+          </div>
+
+          <div class="dialog-actions">
+            <button type="button" class="cerrar-btn" id="cerrarModal"
+              >Cancelar</button
+            >
+          </div>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog class="base-dialog" id="modalClientePersona">
+      <form method="dialog" class="base-form" id="clientePersonaForm">
+        <h2>Registrar nuevo cliente (Persona)</h2>
 
         <div class="form-content">
           <div class="form-group">
-            <label for="categoria">Categoría:</label>
-            <select name="categoria" id="categoria">
-              <option value="">—Seleccionar un distrito</option>
+            <label for="persona">Persona:</label>
+            <select name="persona" id="persona" required>
+              <option value="">—Seleccionar una persona—</option>
+              {
+                PERSONAS.map((persona) => {
+                  return (
+                    <option value={persona.idPersona}>
+                      {persona.nombreCompleto} : {persona.dni}
+                    </option>
+                  );
+                })
+              }
             </select>
-          </div>
-
-          <div class="form-group">
-            <label for="nombre">Nombre:</label>
-            <input
-              type="text"
-              id="nombre"
-              name="nombre"
-              maxlength="100"
-              required
-            />
-          </div>
-
-          <div class="form-group">
-            <label for="descripcion">Descripción:</label>
-            <textarea name="descripcion" id="descripcion" maxlength="200"
-            ></textarea>
-          </div>
-
-          <div class="form-group">
-            <label for="precio">Precio:</label>
-            <input type="number" id="precio" name="precio" min="1" required />
           </div>
 
           <div class="dialog-actions">
             <button type="submit" class="btn btn-primary">Guardar</button>
-            <button type="button" class="cerrar-btn" id="cerrarModal"
+            <button type="button" class="cerrar-btn" id="cerrarModalPersona"
+              >Cancelar</button
+            >
+          </div>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog class="base-dialog" id="modalClienteEmpresa">
+      <form method="dialog" class="base-form" id="clienteEmpresaForm">
+        <h2>Registrar nuevo cliente (Empresa)</h2>
+
+        <div class="form-content">
+          <div class="form-group">
+            <label for="empresa">Empresa:</label>
+            <select name="empresa" id="empresa" required>
+              <option value="">—Seleccionar una empresa—</option>
+              {
+                EMPRESAS.map((empresa) => {
+                  return (
+                    <option value={empresa.idEmpresa}>
+                      {empresa.razonSocial} : {empresa.ruc}
+                    </option>
+                  );
+                })
+              }
+            </select>
+          </div>
+
+          <div class="dialog-actions">
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <button type="button" class="cerrar-btn" id="cerrarModalEmpresa"
               >Cancelar</button
             >
           </div>
@@ -95,13 +144,52 @@ const columnasClientes = [
   </PanelMain>
 </PanelLayout>
 
+<style is:inline>
+  .form-flex {
+    display: flex;
+    gap: 20px;
+    align-content: center;
+    justify-content: center;
+  }
+
+  .form-flex button {
+    width: 100%;
+    padding: 20px 30px;
+    border: 1px solid #d2dae6;
+    background-color: #ebf3ff;
+    color: #042c4d;
+    border-radius: 12px;
+    font-size: 24px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .form-flex .form-group:last-child button {
+    border: 1px solid #e6ddd2;
+    background-color: #fcf5ef;
+    color: #ac4c07;
+  }
+</style>
+
 <script>
   import Swal from "sweetalert2";
 
   document.addEventListener("DOMContentLoaded", () => {
     const btnAbrir = document.getElementById("anadirClientes");
+    const btnAbrirPersona = document.getElementById("anadirClientePersona");
+    const btnAbrirEmpresa = document.getElementById("anadirClienteEmpresa");
     const modal = document.getElementById("modalCliente") as HTMLDialogElement;
+    const modalPersona = document.getElementById(
+      "modalClientePersona"
+    ) as HTMLDialogElement;
+    const modalEmpresa = document.getElementById(
+      "modalClienteEmpresa"
+    ) as HTMLDialogElement;
     const btnCerrar = document.getElementById("cerrarModal");
+    const btnCerrarPersona = document.getElementById("cerrarModalPersona");
+    const btnCerrarEmpresa = document.getElementById("cerrarModalEmpresa");
 
     btnAbrir?.addEventListener("click", () => {
       if (modal.showModal) {
@@ -111,23 +199,49 @@ const columnasClientes = [
       }
     });
 
+    btnAbrirPersona?.addEventListener("click", () => {
+      if (modalPersona.showModal) {
+        modalPersona.showModal();
+        modal.close();
+      } else {
+        modalPersona.setAttribute("open", "true");
+        modal.close();
+      }
+    });
+
+    btnAbrirEmpresa?.addEventListener("click", () => {
+      if (modalEmpresa.showModal) {
+        modalEmpresa.showModal();
+        modal.close();
+      } else {
+        modalEmpresa.setAttribute("open", "true");
+        modal.close();
+      }
+    });
+
     btnCerrar?.addEventListener("click", () => {
       modal.close();
     });
 
+    btnCerrarPersona?.addEventListener("click", () => {
+      modalPersona.close();
+    });
+
+    btnCerrarEmpresa?.addEventListener("click", () => {
+      modalEmpresa.close();
+    });
+
     document
-      .getElementById("clienteForm")
+      .getElementById("clientePersonaForm")
       ?.addEventListener("submit", function (e) {
         e.preventDefault();
 
         const persona = (document.getElementById("persona") as HTMLInputElement)
           .value;
-        const empresa = (document.getElementById("empresa") as HTMLInputElement)
-          .value;
 
-        console.log({ persona, empresa, estado: 1 });
+        console.log({ persona, estado: 1 });
 
-        modal.close();
+        modalPersona.close();
 
         Swal.fire({
           title: "Cliente registrado con éxito!",
@@ -135,6 +249,25 @@ const columnasClientes = [
         });
 
         (document.getElementById("persona") as HTMLInputElement).value = "";
+      });
+
+    document
+      .getElementById("clienteEmpresaForm")
+      ?.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const empresa = (document.getElementById("empresa") as HTMLInputElement)
+          .value;
+
+        console.log({ empresa, estado: 1 });
+
+        modalEmpresa.close();
+
+        Swal.fire({
+          title: "Cliente registrado con éxito!",
+          icon: "success",
+        });
+
         (document.getElementById("empresa") as HTMLInputElement).value = "";
       });
   });

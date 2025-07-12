@@ -1,7 +1,6 @@
 ---
 import Avatar from "@/icons/Avatar.astro";
 import Carpeta from "@/icons/Carpeta.astro";
-import Configuracion from "@/icons/Configuracion.astro";
 import Empleados from "@/icons/Empleados.astro";
 import Inventarios from "@/icons/Inventarios.astro";
 import Panel from "@/icons/Panel.astro";
@@ -71,13 +70,6 @@ const { activeSection } = Astro.props;
   </div>
 
   <div class="sidebar-footer">
-    <a
-      class=`sidebar-link ${activeSection === 'nosotros' ? 'active' : ''}`
-      href="/panel/nosotros"
-    >
-      <Configuracion />
-    </a>
-    <div class="separador-h"></div>
     <a
       class=`sidebar-link ${activeSection === 'perfil' ? 'active' : ''}`
       href="/panel/perfil"

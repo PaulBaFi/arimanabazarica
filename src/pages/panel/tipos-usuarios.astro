@@ -57,11 +57,11 @@ const columnasTipoUsuario = [
 
         <div class="form-content">
           <div class="form-group">
-            <label for="tipoUsuario">Tipo de usuario:</label>
+            <label for="tipoUsuarioInput">Tipo de usuario:</label>
             <input
               type="text"
-              id="tipoUsuario"
-              name="tipoUsuario"
+              id="tipoUsuarioInput"
+              name="tipoUsuarioInput"
               maxlength="100"
               required
             />
@@ -99,7 +99,8 @@ const columnasTipoUsuario = [
 
     btnCerrar?.addEventListener("click", () => {
       modal.close();
-      (document.getElementById("tipoUsuario") as HTMLInputElement).value = "";
+      (document.getElementById("tipoUsuarioInput") as HTMLInputElement).value =
+        "";
     });
 
     document
@@ -108,7 +109,7 @@ const columnasTipoUsuario = [
         e.preventDefault();
 
         const tipoUsuario = (
-          document.getElementById("tipoUsuario") as HTMLInputElement
+          document.getElementById("tipoUsuarioInput") as HTMLInputElement
         ).value;
 
         console.log({ tipoUsuario, estado: 1 });
@@ -118,8 +119,9 @@ const columnasTipoUsuario = [
           title: "Tipo de usuario registrado con éxito",
           icon: "success",
         });
-
-        (document.getElementById("tipoUsuario") as HTMLInputElement).value = "";
+        (
+          document.getElementById("tipoUsuarioInput") as HTMLInputElement
+        ).value = "";
       });
   });
 </script>

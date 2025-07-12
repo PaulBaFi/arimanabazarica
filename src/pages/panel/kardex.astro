@@ -10,6 +10,13 @@ import PanelMain from "@/components/PanelMain.astro";
   <Sidebar slot="sidebar" activeSection="reportes" />
   <Navbar slot="navbar" title="Reportes" sections={reportesSections} />
   <PanelMain slot="main">
-    <div class="frame-container"></div>
+    <div class="frame-container">
+      <iframe
+        title="Reporte Kardex"
+        width="600"
+        height="373.5"
+        src="https://app.powerbi.com/view?r=eyJrIjoiMjQ0MDM0NTAtNjc0NS00M2E1LWE2YjMtNmM2MGUyMTAwNzI2IiwidCI6IjEzODQxZDVmLTk2OGQtNDYyNC1hN2RhLWQ2OGE2MDA2YTg0YSIsImMiOjR9"
+      ></iframe>
+    </div>
   </PanelMain>
 </PanelLayout>
